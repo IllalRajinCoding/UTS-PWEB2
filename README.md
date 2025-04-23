@@ -13,6 +13,6 @@ Cuma install tailwindcss aja
    npm run build
    ```
 3. **Kejar waktu bang**
-``` goks
-Yo semangat bang
-```
+   ```goks
+   Yo semangat bang
+   ```
