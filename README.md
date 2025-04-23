@@ -14,5 +14,5 @@ Cuma install tailwindcss aja
    ```
 3. **Kejar waktu bang**
    ```goks
-Yo semangat bang
+   Yo semangat bang
    ```
