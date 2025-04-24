@@ -1,5 +1,21 @@
 <?php
 include '../config/koneksi.php';
+
+
+if (isset($_POST['nama'])) {
+    $nama = $_POST['nama'];
+    $latitude = $_POST['latitude'];
+    $longitude = $_POST['longitude'];
+    $provinsi_id = $_POST['provinsi_id'];
+
+    $query = mysqli_query($koneksi, "INSERT INTO kabkota (nama, latitude, longitude, provinsi_id) VALUES ('$nama', '$latitude', '$longitude', '$provinsi_id')");
+
+    if ($query) {
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='kabkota.php';</script>";
+    } else {
+        echo "<script>alert('Gagal menambahkan data!'); window.history.back();</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,8 +38,8 @@ include '../config/koneksi.php';
             --card-bg: #ffffff;
             --hover-bg: #f3f4f6;
             --radius: 8px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
 
@@ -149,7 +165,8 @@ include '../config/koneksi.php';
             border-collapse: collapse;
         }
 
-        th, td {
+        th,
+        td {
             padding: 16px 20px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
@@ -259,13 +276,14 @@ include '../config/koneksi.php';
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
+
             .search-container {
                 width: 100%;
                 margin-top: 10px;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 12px 15px;
             }
 
@@ -297,7 +315,8 @@ include '../config/koneksi.php';
                 font-size: 1.2rem;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 10px 12px;
                 font-size: 0.85rem;
             }
@@ -344,30 +363,30 @@ include '../config/koneksi.php';
                         <?php
                         $query = mysqli_query($koneksi, "SELECT kab.*, prov.nama AS nama_provinsi FROM kabkota kab LEFT JOIN provinsi prov ON kab.provinsi_id = prov.id ORDER BY prov.nama ASC, kab.nama ASC");
                         $i = 1;
-                        if(mysqli_num_rows($query) > 0) {
+                        if (mysqli_num_rows($query) > 0) {
                             while ($data = mysqli_fetch_array($query)) {
                         ?>
-                            <tr>
-                                <td><?= $i++; ?></td>
-                                <td>
-                                    <?= htmlspecialchars($data['nama']); ?>
-                                    <div class="responsive-info">
-                                        <small>Koordinat: <?= htmlspecialchars($data['latitude']); ?>, <?= htmlspecialchars($data['longitude']); ?></small>
-                                    </div>
-                                </td>
-                                <td class="hide-mobile"><?= htmlspecialchars($data['latitude']); ?></td>
-                                <td class="hide-mobile"><?= htmlspecialchars($data['longitude']); ?></td>
-                                <td><span class="province-badge"><?= htmlspecialchars($data['nama_provinsi']); ?></span></td>
-                                <td>
-                                    <a href="https://www.google.com/maps?q=<?= $data['latitude']; ?>,<?= $data['longitude']; ?>" target="_blank" class="map-link">
-                                        <i class="fas fa-map-marked-alt"></i> Lihat Peta
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php 
+                                <tr>
+                                    <td><?= $i++; ?></td>
+                                    <td>
+                                        <?= htmlspecialchars($data['nama']); ?>
+                                        <div class="responsive-info">
+                                            <small>Koordinat: <?= htmlspecialchars($data['latitude']); ?>, <?= htmlspecialchars($data['longitude']); ?></small>
+                                        </div>
+                                    </td>
+                                    <td class="hide-mobile"><?= htmlspecialchars($data['latitude']); ?></td>
+                                    <td class="hide-mobile"><?= htmlspecialchars($data['longitude']); ?></td>
+                                    <td><span class="province-badge"><?= htmlspecialchars($data['nama_provinsi']); ?></span></td>
+                                    <td>
+                                        <a href="https://www.google.com/maps?q=<?= $data['latitude']; ?>,<?= $data['longitude']; ?>" target="_blank" class="map-link">
+                                            <i class="fas fa-map-marked-alt"></i> Lihat Peta
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php
                             }
                         } else {
-                        ?>
+                            ?>
                             <tr>
                                 <td colspan="6" class="no-results">Tidak ada data yang tersedia</td>
                             </tr>
@@ -380,13 +399,45 @@ include '../config/koneksi.php';
                 <div class="results-count">
                     Menampilkan <span id="countResults"><?= mysqli_num_rows($query); ?></span> kabupaten/kota
                 </div>
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
-                    <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
-                </ul>
+            </div>
+        </div>
+    </main>
+
+    <main class="container">
+        <div>
+            <div>
+                <h1>Tambah Data Kabupaten/Kota</h1>
+            </div>
+            <div>
+                <form action="" method="post">
+                    <div>
+                        <label for="nama">Nama Kabupaten/Kota</label>
+                        <input type="text" name="nama" id="nama" required>
+                    </div>
+                    <div>
+                        <label for="latitude">Latitude</label>
+                        <input type="text" name="latitude" id="latitude" required>
+                    </div>
+                    <div>
+                        <label for="longitude">Longitude</label>
+                        <input type="text" name="longitude" id="longitude" required>
+                    </div>
+                    <div>
+                        <label for="provinsi_id">Provinsi</label>
+                        <select name="provinsi_id" id="provinsi_id" required>
+                            <?php
+                            $query_provinsi = mysqli_query($koneksi, "SELECT * FROM provinsi ORDER BY nama ASC");
+                            while ($data_provinsi = mysqli_fetch_array($query_provinsi)) {
+                            ?>
+                                <option value="<?= $data_provinsi['id']; ?>"><?= htmlspecialchars($data_provinsi['nama']); ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <button type="submit">Simpan</button>
+                    <div>
+                        <a href="index.php">Kembali</a>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
@@ -396,21 +447,21 @@ include '../config/koneksi.php';
         const searchInput = document.getElementById('searchInput');
         const dataTable = document.getElementById('dataTable');
         const countResults = document.getElementById('countResults');
-        
+
         searchInput.addEventListener('keyup', function() {
             const searchTerm = this.value.toLowerCase();
             const rows = dataTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
             let visibleCount = 0;
-            
+
             for (let i = 0; i < rows.length; i++) {
                 const nameCell = rows[i].getElementsByTagName('td')[1];
                 const provinceCell = rows[i].getElementsByTagName('td')[4];
-                
+
                 if (nameCell && provinceCell) {
                     const nameText = nameCell.textContent || nameCell.innerText;
                     const provinceText = provinceCell.textContent || provinceCell.innerText;
-                    
-                    if (nameText.toLowerCase().includes(searchTerm) || 
+
+                    if (nameText.toLowerCase().includes(searchTerm) ||
                         provinceText.toLowerCase().includes(searchTerm)) {
                         rows[i].style.display = '';
                         visibleCount++;
@@ -419,7 +470,7 @@ include '../config/koneksi.php';
                     }
                 }
             }
-            
+
             countResults.textContent = visibleCount;
         });
     </script>
