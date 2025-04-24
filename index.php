@@ -8,6 +8,9 @@
 </head>
 
 <body>
+    <nav>
+        <a href="./pages/login.php">Login</a>
+    </nav>
     <a href="./form/kabkota.php">Kab Kota</a>
 </body>
 
