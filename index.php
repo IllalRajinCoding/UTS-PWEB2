@@ -4,14 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>UMKM</title>
 </head>
 
 <body>
+    <!-- Navbar -->
     <nav>
-        <a href="./pages/login.php">Login</a>
+        <a href="./form/kabkota.php">aaaaaaaaaaaaaaaaaaaa</a>
     </nav>
-    <a href="./form/kabkota.php">Kab Kota</a>
+    <!-- main hero -->
+    <main>
+
+    </main>
 </body>
 
 </html>
