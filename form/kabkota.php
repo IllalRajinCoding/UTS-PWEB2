@@ -2,7 +2,6 @@
 include '../config/koneksi.php';
 session_start();
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nama'])) {
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $latitude = mysqli_real_escape_string($koneksi, $_POST['latitude']);
@@ -16,11 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nama'])) {
     exit;
 }
 
-// Fetch data for table
 $query = mysqli_query($koneksi, "SELECT kab.*, prov.nama AS nama_provinsi FROM kabkota kab LEFT JOIN provinsi prov ON kab.provinsi_id = prov.id ORDER BY prov.nama ASC, kab.nama ASC");
 $kabkota_data = mysqli_num_rows($query) > 0 ? mysqli_fetch_all($query, MYSQLI_ASSOC) : [];
 
-// Fetch provinces for dropdown
 $query_provinsi = mysqli_query($koneksi, "SELECT * FROM provinsi ORDER BY nama ASC");
 $provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
 ?>
