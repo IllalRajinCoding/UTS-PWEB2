@@ -189,5 +189,11 @@ $provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
     <script src="../src/index.js"></script>
     <script src="../src/toggle.js"></script>
 </body>
+<?php
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+?>
 
 </html>

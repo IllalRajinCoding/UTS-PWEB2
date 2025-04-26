@@ -2,10 +2,8 @@ const toggleBtn = document.querySelector("#toggle");
 const toggleIcon = document.querySelector("#toggle-icon");
 
 toggleBtn.addEventListener("click", function () {
-  // Toggle dark mode class
   const isDark = document.documentElement.classList.toggle("dark");
 
-  // Update icon
   if (isDark) {
     toggleIcon.setAttribute(
       "d",

@@ -19,7 +19,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
 // function delete
 function confirmDelete(id) {
   if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-    window.location.href = "delete.php?id=" + id;
+    window.location.href = "prosesData.php?id=" + id;
   }
   return false;
 }
