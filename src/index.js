@@ -18,7 +18,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
 
 function confirmDelete(id) {
   if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-    window.location.href = "prosesData.php?id=" + id;
+    window.location.href = "../prosess/deletekab.php?id=" + id;
   }
   return false;
 }

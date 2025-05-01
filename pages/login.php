@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Validasi login
   if ($username === 'admin' && $password === 'admin') {
     $_SESSION['loggedin'] = true;
-    header("Location: dasboard.php");
+    header("Location: dashboard.php");
     exit;
   } else {
     $error = "Username atau password salah!";

@@ -104,7 +104,7 @@ include_once '../config/koneksi.php';
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Data Pembina</h2>
                 <p class="text-gray-600 dark:text-gray-300">Kelola data pembina dan informasi terkait.</p>
-                <a href="#" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Lihat Data</a>
+                <a href="../form/pembina.php" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Lihat Data</a>
             </div>
 
             <!-- Card Data Kategori UMKM -->

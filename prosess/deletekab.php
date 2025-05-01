@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
 
     mysqli_stmt_close($query);
 
-    header('Location: kabkota.php');
+    header('Location: ../form/kabkota.php');
     exit;
 } else {
     $_SESSION['error'] = 'Permintaan tidak valid!';
-    header('Location: kabkota.php');
+    header('Location: ../form/kabkoota.php');
     exit;
 }
