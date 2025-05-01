@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
                         </summary>
                         <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-sky-700 rounded-md shadow-lg py-1 z-10">
                             <a href="./pages/pelatihan.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-sky-600">Pelatihan</a>
-                            <a href="./pages/profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-sky-600">Profile UMKM</a>
+                            <a href="./pages/login.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-sky-600">Login</a>
                         </div>
                     </details>
                 </div>

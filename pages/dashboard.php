@@ -1,15 +1,3 @@
-<?php
-session_start();
-
-// Cek jika user belum login, redirect ke halaman login
-if (!isset($_SESSION['loggedin'])) {
-    header("Location: login.php");
-    exit;
-}
-
-include_once '../config/koneksi.php';
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -19,6 +7,25 @@ include_once '../config/koneksi.php';
     <title>Dashboard</title>
     <link rel="stylesheet" href="../src/output.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for backdrop blur */
+        .backdrop-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+            display: none;
+        }
+
+        .mobile-menu {
+            z-index: 50;
+            position: relative;
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -38,19 +45,14 @@ include_once '../config/koneksi.php';
 
     <nav class="bg-white border-gray-200 dark:bg-gray-900">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 mr-2">
-                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                </svg>
-                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            <button id="toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path id="toggle-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
             </button>
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <span class="self-center text-2xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Dashboard</span>
             </a>
-
-            <!-- Dark mode toggle -->
 
             <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
@@ -81,14 +83,17 @@ include_once '../config/koneksi.php';
         </div>
     </nav>
 
+    <!-- Backdrop blur effect -->
+    <div id="backdrop-blur" class="backdrop-blur"></div>
+
     <!-- Mobile menu (hidden by default) -->
-    <div class="hidden w-full md:hidden" id="mobile-menu">
+    <div class="hidden w-full md:hidden mobile-menu" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-2 mx-4">
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">Home</a>
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">About</a>
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">Services</a>
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">Pricing</a>
-            <a href="logout.php" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-red-600 dark:hover:bg-red-700">Logout</a>
+            <a href="../prosess/logout.php" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-red-600 dark:hover:bg-red-700">Logout</a>
         </div>
     </div>
 
@@ -124,46 +129,30 @@ include_once '../config/koneksi.php';
     </main>
 
     <script>
-        // Hamburger menu toggle
+        // Hamburger menu toggle with backdrop effect
         document.querySelector('[data-collapse-toggle="navbar-default"]').addEventListener('click', function() {
             const mobileMenu = document.getElementById('mobile-menu');
+            const backdrop = document.getElementById('backdrop-blur');
+
+            // Toggle menu and backdrop
             mobileMenu.classList.toggle('hidden');
+            backdrop.style.display = mobileMenu.classList.contains('hidden') ? 'none' : 'block';
+
+            // Prevent scrolling when menu is open
+            document.body.style.overflow = mobileMenu.classList.contains('hidden') ? 'auto' : 'hidden';
         });
 
-        // Dark mode toggle
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        // Close menu when clicking on backdrop
+        document.getElementById('backdrop-blur').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const backdrop = document.getElementById('backdrop-blur');
 
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            themeToggleLightIcon.classList.remove('hidden');
-        } else {
-            themeToggleDarkIcon.classList.remove('hidden');
-        }
-
-        themeToggleBtn.addEventListener('click', function() {
-            themeToggleDarkIcon.classList.toggle('hidden');
-            themeToggleLightIcon.classList.toggle('hidden');
-
-            if (localStorage.getItem('color-theme')) {
-                if (localStorage.getItem('color-theme') === 'light') {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                }
-            } else {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                }
-            }
+            mobileMenu.classList.add('hidden');
+            backdrop.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
     </script>
+    <script src="../src/toggle.js"></script>
 </body>
 
 </html>

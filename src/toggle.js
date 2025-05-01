@@ -1,33 +1,54 @@
-const toggleBtn = document.querySelector("#toggle");
-const toggleIcon = document.querySelector("#toggle-icon");
+// src/theme.js
+document.addEventListener("DOMContentLoaded", function () {
+  // Versi paling sederhana yang pasti bekerja
+  document.getElementById("toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const isDark = html.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
 
-toggleBtn.addEventListener("click", function () {
-  const isDark = document.documentElement.classList.toggle("dark");
+    // Animasi icon
+    this.querySelector("svg path").style.transform = isDark
+      ? "rotate(180deg)"
+      : "rotate(0deg)";
+  });
 
-  if (isDark) {
-    toggleIcon.setAttribute(
-      "d",
-      "M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-    );
+  // Terapkan tema yang tersimpan saat load
+  const savedTheme = localStorage.getItem("theme");
+  if (
+    savedTheme === "dark" ||
+    (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  }
+  // Mobile Menu Toggle Functionality
+  const mobileMenuToggle = document.querySelector(
+    '[data-collapse-toggle="navbar-default"]'
+  );
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  // Debug: Log mobile menu elements
+  console.log("Mobile menu elements:", {
+    mobileMenuToggle,
+    mobileMenu,
+  });
+
+  if (mobileMenuToggle && mobileMenu) {
+    mobileMenuToggle.addEventListener("click", function () {
+      mobileMenu.classList.toggle("hidden");
+      console.log(
+        "Mobile menu toggled. Visible:",
+        !mobileMenu.classList.contains("hidden")
+      );
+    });
   } else {
-    toggleIcon.setAttribute(
-      "d",
-      "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-    );
+    console.warn("Mobile menu toggle elements not found!");
   }
 
-  // Save preference to localStorage
-  localStorage.theme = isDark ? "dark" : "light";
+  // Add transition to the toggle icon if not already present
+  if (toggleIcon) {
+    toggleIcon.style.transition = "transform 0.3s ease";
+  }
 });
 
-tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        primary: "#4361ee",
-        secondary: "#3f37c9",
-      },
-    },
-  },
-};
+// Debug: Check if script loaded
+console.log("theme.js loaded successfully");

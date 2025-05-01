@@ -55,8 +55,7 @@ $provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
                     </svg>
                 </button>
                 <div class="flex items-center">
-                    <i class="fas fa-map-marker-alt text-primary dark:text-primary-300 mr-2"></i>
-                    <span class="text-xl font-bold text-gray-900 dark:text-white">Data Domisili</span>
+                    <span class="text-xl font-bold text-gray-900 dark:text-white">Data Kabupaten/Kota</span>
                 </div>
             </div>
         </div>
@@ -109,7 +108,7 @@ $provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <a href="edit.php?id=<?= $data['id'] ?>" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 mr-4 transition-colors duration-200">
+                                        <a href="editkab.php?id=<?= $data['id'] ?>" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 mr-4 transition-colors duration-200">
                                             <i class="fas fa-edit mr-1"></i>Edit
                                         </a>
                                         <a href="#" onclick="return confirmDelete(<?= $data['id'] ?>)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors duration-200">
@@ -174,7 +173,7 @@ $provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
                         <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-gray-800 transition-colors duration-200">
                             <i class="fas fa-save mr-2"></i>Simpan
                         </button>
-                        <a href="../index.php" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                        <a href="../pages/dashboard.php" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-gray-800 transition-colors duration-200">
                             <i class="fas fa-arrow-left mr-2"></i>Kembali
                         </a>
                     </div>

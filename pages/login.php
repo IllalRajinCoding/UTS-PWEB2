@@ -3,7 +3,7 @@ session_start();
 
 // Cek jika user sudah login, redirect ke halaman admin
 if (isset($_SESSION['loggedin'])) {
-  header("Location: dashboard.php");
+  header("Location: ../index.php");
   exit;
 }
 
@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>Admin Login</title>
   <link rel="stylesheet" href="../src/output.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  </script>
 </head>
 
 <body class="bg-gray-100 dark:bg-sky-900 flex items-center justify-center h-screen">
