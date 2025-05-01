@@ -16,3 +16,12 @@ Cuma install tailwindcss aja
    ```goks
    Yo semangat bang
    ```
+
+# Password & Username
+
+```username
+username: admin
+```
+```password
+password: admin
+```
