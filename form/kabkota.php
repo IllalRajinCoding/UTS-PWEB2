@@ -22,7 +22,7 @@ $query_provinsi = mysqli_query($koneksi, "SELECT * FROM provinsi ORDER BY nama A
 $provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">

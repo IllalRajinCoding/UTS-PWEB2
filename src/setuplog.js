@@ -1,4 +1,4 @@
-const defuser = "blogadmin";
+const defuser = "admin";
 const defpass = "112233";
 
 const logForm = document.querySelector("form");
@@ -13,8 +13,6 @@ logForm.addEventListener("submit", function (e) {
 
   if (user === defuser && pass === defpass) {
     alert("Login Succesfull");
-
-    // localStorage.setItem("LoggedIn", "true");
 
     setTimeout(() => {
       window.location.href = "./dashboard.php";

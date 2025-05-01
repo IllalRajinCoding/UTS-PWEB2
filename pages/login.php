@@ -1,18 +1,37 @@
+<?php
+session_start();
+
+// Cek jika user sudah login, redirect ke halaman admin
+if (isset($_SESSION['loggedin'])) {
+  header("Location: dashboard.php");
+  exit;
+}
+
+// Proses login
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $username = $_POST['username'] ?? '';
+  $password = $_POST['password'] ?? '';
+
+  // Validasi login
+  if ($username === 'admin' && $password === 'admin') {
+    $_SESSION['loggedin'] = true;
+    header("Location: dasboard.php");
+    exit;
+  } else {
+    $error = "Username atau password salah!";
+  }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="id">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login</title>
   <link rel="stylesheet" href="../src/output.css">
-  <script>
-    // Check for saved user preference or system preference
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+  <script src="https://cdn.tailwindcss.com"></script>
   </script>
 </head>
 
@@ -26,7 +45,7 @@
 
   <div class="bg-white dark:bg-sky-800 p-8 rounded-lg shadow-xl w-96 transition-all duration-300 flex flex-col items-center relative">
 
-    <details class="group w-full">
+    <details class="group w-full" open>
       <summary class="flex justify-between items-center cursor-pointer list-none">
         <h1 class="text-2xl font-bold text-sky-800 dark:text-sky-100 group-open:text-sky-600 dark:group-open:text-sky-300 transition-colors">
           Masuk ke Halaman Admin
@@ -35,15 +54,20 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </summary>
-      <form action="#" method="post" class="mt-6 w-full">
+      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="mt-6 w-full">
+        <?php if (isset($error)): ?>
+          <div class="mb-4 p-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg">
+            <?php echo $error; ?>
+          </div>
+        <?php endif; ?>
         <div class="mb-6">
-          <label for="user" class="block text-sm font-medium text-sky-700 dark:text-sky-300 mb-1">Username</label>
-          <input type="text" id="user" placeholder="Username" required
+          <label for="username" class="block text-sm font-medium text-sky-700 dark:text-sky-300 mb-1">Username</label>
+          <input type="text" id="username" name="username" placeholder="Username" required
             class="w-full px-4 py-2 rounded-lg border border-sky-300 dark:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400 bg-white dark:bg-sky-700 text-sky-900 dark:text-sky-100 transition-colors" />
         </div>
         <div class="mb-6">
-          <label for="pass" class="block text-sm font-medium text-sky-700 dark:text-sky-300 mb-1">Password</label>
-          <input type="password" id="pass" placeholder="Password" required
+          <label for="password" class="block text-sm font-medium text-sky-700 dark:text-sky-300 mb-1">Password</label>
+          <input type="password" id="password" name="password" placeholder="Password" required
             class="w-full px-4 py-2 rounded-lg border border-sky-300 dark:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400 bg-white dark:bg-sky-700 text-sky-900 dark:text-sky-100 transition-colors" />
         </div>
         <div>
@@ -68,8 +92,6 @@
     </div>
   </div>
   </div>
-
-  <script src="../src/setuplog.js"></script>
   <script src="../src/toggle.js"></script>
 </body>
 

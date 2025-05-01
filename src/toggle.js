@@ -19,3 +19,15 @@ toggleBtn.addEventListener("click", function () {
   // Save preference to localStorage
   localStorage.theme = isDark ? "dark" : "light";
 });
+
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#4361ee",
+        secondary: "#3f37c9",
+      },
+    },
+  },
+};
