@@ -38,7 +38,7 @@ if (isset($_SESSION['message'])) {
                 <tr>
                     <td><?php echo $row['id']; ?></td>
                     <td><?php echo $row['nama']; ?></td>
-                    <td><?php echo $row['gender']; ?></td>
+                    <td><?php echo $row['gender'] == 'L' ? 'Laki-Laki' : 'perempuan'; ?></td>
                     <td><?php echo $row['tgl_lahir']; ?></td>
                     <td><?php echo $row['tmp_lahir']; ?></td>
                     <td><?php echo $row['keahlian']; ?></td>
