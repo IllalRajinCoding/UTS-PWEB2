@@ -1,47 +1,27 @@
 # INSTALL PROJECT
-awal install
 
-```git bash
+## Clone Repository
 git clone https://github.com/IllalRajinCoding/UTS-PWEB2.git
-```
-
-```git bash
 cd UTS-PWEB2
-```
 
-## Installation tailwindcss
+## Install Tailwind CSS
+npm install tailwindcss @tailwindcss/cli
 
-1. **Install Tailwind CSS via npm**
-   ```bash
-   npm install tailwindcss @tailwindcss/cli
-   ```
-2. **Run Tailwindcss**
-   Run diterminal untuk memproses tailwind
-   ```bash
-   npm run build
-   ```
-3. **Kejar waktu bang**
-   ```goks
-   Yo semangat bang
-   ```
+## Build Project
+npm run build
 
-# How to push/pull
-## pull project
-```git bash
+## Development Note
+# Keep going! You got this! 💪
+
+## Push/Pull Commands
+# Pull updates
 git pull
-```
-## push project
-```git bash
+
+# Push changes
 git add .
-git commit -m "initial commit update"
+git commit -m "Your commit message"
 git push -u origin main
-```
 
-# Password & Username
-
-```username
-username: admin
-```
-```password
-password: admin
-```
+## Login Credentials
+Username: admin
+Password: admin
