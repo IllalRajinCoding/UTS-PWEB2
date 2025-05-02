@@ -2,12 +2,13 @@
 include '../config/koneksi.php';
 session_start();
 
-$query = mysqli_query($koneksi, "SELECT * FROM pembina ORDER BY id ASC");
-$pembina = mysqli_fetch_all($query, MYSQLI_ASSOC);
-if (isset($_SESSION['message'])) {
-    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
-    unset($_SESSION['message']);
+class Pembina {
+    private $koneksi;
+    public function __construct($koneksi) {
+        $this->koneksi = $koneksi;
+    }
 }
+
 ?>
 
 <!DOCTYPE html>

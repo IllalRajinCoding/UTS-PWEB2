@@ -2,25 +2,64 @@
 include '../config/koneksi.php';
 session_start();
 
+class KabupatenKota
+{
+    private $koneksi;
+
+    public function __construct($koneksi)
+    {
+        $this->koneksi = $koneksi;
+    }
+
+    public function create($data)
+    {
+        $nama = mysqli_real_escape_string($this->koneksi, $data['nama']);
+        $latitude = mysqli_real_escape_string($this->koneksi, $data['latitude']);
+        $longitude = mysqli_real_escape_string($this->koneksi, $data['longitude']);
+        $provinsi_id = (int)$data['provinsi_id'];
+
+        $query = "INSERT INTO kabkota (nama, latitude, longitude, provinsi_id) 
+                 VALUES ('$nama', '$latitude', '$longitude', '$provinsi_id')";
+
+        return mysqli_query($this->koneksi, $query);
+    }
+
+    public function getAll()
+    {
+        $query = "SELECT kab.*, prov.nama AS nama_provinsi 
+                 FROM kabkota kab 
+                 LEFT JOIN provinsi prov ON kab.provinsi_id = prov.id 
+                 ORDER BY prov.nama ASC, kab.nama ASC";
+
+        $result = mysqli_query($this->koneksi, $query);
+        return mysqli_num_rows($result) > 0 ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
+    }
+
+    public function getProvinsiList()
+    {
+        $query = "SELECT * FROM provinsi ORDER BY nama ASC";
+        $result = mysqli_query($this->koneksi, $query);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+}
+
+$kabupatenKota = new KabupatenKota($koneksi);
+
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nama'])) {
-    $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
-    $latitude = mysqli_real_escape_string($koneksi, $_POST['latitude']);
-    $longitude = mysqli_real_escape_string($koneksi, $_POST['longitude']);
-    $provinsi_id = (int)$_POST['provinsi_id'];
-
-    $query = mysqli_query($koneksi, "INSERT INTO kabkota (nama, latitude, longitude, provinsi_id) VALUES ('$nama', '$latitude', '$longitude', '$provinsi_id')");
-
-    $_SESSION['message'] = $query ? 'Data berhasil ditambahkan!' : 'Gagal menambahkan data!';
+    if ($kabupatenKota->create($_POST)) {
+        $_SESSION['message'] = 'Data berhasil ditambahkan!';
+    } else {
+        $_SESSION['message'] = 'Gagal menambahkan data!';
+    }
     header('Location: kabkota.php');
     exit;
 }
 
-$query = mysqli_query($koneksi, "SELECT kab.*, prov.nama AS nama_provinsi FROM kabkota kab LEFT JOIN provinsi prov ON kab.provinsi_id = prov.id ORDER BY prov.nama ASC, kab.nama ASC");
-$kabkota_data = mysqli_num_rows($query) > 0 ? mysqli_fetch_all($query, MYSQLI_ASSOC) : [];
-
-$query_provinsi = mysqli_query($koneksi, "SELECT * FROM provinsi ORDER BY nama ASC");
-$provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
+$kabkota_data = $kabupatenKota->getAll();
+$provinsi_data = $kabupatenKota->getProvinsiList();
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -184,6 +223,14 @@ $provinsi_data = mysqli_fetch_all($query_provinsi, MYSQLI_ASSOC);
 
     <script src="../src/index.js"></script>
     <script src="../src/toggle.js"></script>
+    <script>
+        function confirmDelete(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                window.location.href = '../prosess/delete.php?id=' + id;
+            }
+            return false;
+        }
+    </script>
 </body>
 <?php
 if (isset($_SESSION['message'])) {
