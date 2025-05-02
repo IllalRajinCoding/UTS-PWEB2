@@ -1,7 +1,15 @@
 # INSTALL PROJECT
-Cuma install tailwindcss aja
+awal install
 
-## Installation Steps
+```git bash
+git clone https://github.com/IllalRajinCoding/UTS-PWEB2.git
+```
+
+```git bash
+cd UTS-PWEB2
+```
+
+## Installation tailwindcss
 
 1. **Install Tailwind CSS via npm**
    ```bash
@@ -16,6 +24,18 @@ Cuma install tailwindcss aja
    ```goks
    Yo semangat bang
    ```
+
+# How to push/pull
+## pull project
+```git bash
+git pull
+```
+## push project
+```git bash
+git add .
+git commit -m "initial commit update"
+git push -u origin main
+```
 
 # Password & Username
 

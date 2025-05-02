@@ -2,12 +2,51 @@
 include '../config/koneksi.php';
 session_start();
 
-class Pembina {
+class Pembina
+{
     private $koneksi;
-    public function __construct($koneksi) {
+
+    public function __construct($koneksi)
+    {
         $this->koneksi = $koneksi;
     }
+    // implement query databases
+    public function create($data)
+    {
+        $nama = mysqli_real_escape_string($this->koneksi, $data['nama']);
+        $gender = mysqli_real_escape_string($this->koneksi, $data['gender' == 'L' ? 'Laki-Laki' : 'Perempuan']);
+        $tgl_lahir = mysqli_real_escape_string($this->koneksi, $data['tgl_lahir']);
+        $tmp_lahir = mysqli_real_escape_string($this->koneksi, $data['tmp_lahir']);
+        $keahlian = mysqli_real_escape_string($this->koneksi, $data['keahlian']);
+
+        $query = "INSERT INTO pembina (nama, gender, tgl_lahir, tmp_lahir, keahlian) VALUES ('$nama', '$gender', '$tgl_lahir', '$tmp_lahir', '$keahlian')";
+        return mysqli_query($this->koneksi, $query);
+    }
+
+    public function readQuery()
+    {
+        $query = "SELECT * FROM pembina";
+        $result = mysqli_query($this->koneksi, $query);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 }
+
+// create object with method post
+$pembina = new Pembina($koneksi);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nama'])) {
+    if ($pembina->create($_POST)) {
+        $_SESSION['message'] = 'Data berhasil ditambahkan!';
+    } else {
+        $_SESSION['message'] = 'Gagal menambahkan data!';
+    }
+}
+// alert 
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+
+$pembina_data = $pembina->readQuery();
 
 ?>
 
@@ -35,7 +74,7 @@ class Pembina {
             </tr>
         </thead>
         <thead>
-            <?php foreach ($pembina as $row) : ?>
+            <?php foreach ($pembina_data as $row) : ?>
                 <tr>
                     <td><?php echo $row['id']; ?></td>
                     <td><?php echo $row['nama']; ?></td>
