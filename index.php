@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -986,16 +985,8 @@
 
   <!-- Back to Top Button -->
   <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
-    <i class="fas fa-arrow-up"></i>
+    <i class="fas fa-arrow-up">tes</i>
   </button>
-
-  <!-- Load amCharts resources -->
-  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/indonesiaLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-</head>
-<body>
 
     <script type="module" src="./src/main.js"></script>
 </body>
