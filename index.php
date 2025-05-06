@@ -1,217 +1,1002 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UMKM - Platform Pengembangan Usaha Mikro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        }
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Platform UMKM Indonesia untuk memajukan usaha kecil dan menengah">
+  <title>Direktori UMKM Indonesia</title>
+  
+  <!-- Preconnect for external resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.amcharts.com">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563eb',
+            secondary: '#1e40af',
+            accent: '#f59e0b',
+            dark: '#1f2937',
+            light: '#f3f4f6',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          transitionProperty: {
+            'transform-shadow': 'transform, box-shadow',
+          }
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .animation-delay-200 {
-                animation-delay: 0.2s;
-            }
-            .animation-delay-400 {
-                animation-delay: 0.4s;
-            }
-        }
-    </style>
+      }
+    }
+  </script>
+
+  <!-- amCharts Resources -->
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/geodata/indonesiaLow.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+  <style>
+    /* Map Styles */
+    #indonesia-map {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+      background-color: theme('colors.gray.100');
+    }
+    
+    @media (min-width: 768px) {
+      #indonesia-map {
+        min-height: 500px;
+      }
+    }
+    
+    /* Map Container */
+    .map-container {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 0.75rem;
+    }
+    
+    /* Loading Indicator */
+    .loading-indicator {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      z-index: 10;
+      backdrop-filter: blur(2px);
+    }
+    
+    /* Province Card Animation */
+    .province-item {
+      transition: transform-shadow 0.3s ease;
+    }
+    
+    .province-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Focus Styles for Accessibility */
+    button:focus, a:focus {
+      outline: 2px solid theme('colors.current');
+      outline-offset: 2px;
+    }
+  </style>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 font-sans antialiased transition-colors duration-300">
-    <!-- Navbar -->
-    <nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <img src="logo.png" alt="Logo UMKM" class="h-10 w-10 rounded-full">
-                    <span class="ml-2 text-xl font-semibold text-gray-800 dark:text-white">UMKM<span class="text-primary-600 dark:text-primary-400">Hub</span></span>
-                </div>
+<body class="font-sans bg-gray-50 text-gray-800">
+<!-- Navbar -->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <img src="logo.png" alt="Logo" class="h-10 w-10">
+        <span class="ml-2 text-xl font-semibold text-primary">UMKM<span class="text-accent">Indonesia</span></span>
+      </div>
 
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Desktop menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="./pages/pelatihan.php" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Pelatihan</a>
-                        <a href="./pages/login.php" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Login</a>
-                        <a href="./pages/register.php" class="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-200 shadow-sm">Daftar</a>
-                    </div>
-                </div>
-            </div>
+      <!-- Desktop menu -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-center space-x-4">
+          <a href="#" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
+          <a href="#produk" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Produk</a>
+          <a href="#lokasi" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Lokasi</a>
+          <a href="./pages/pelatihan.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Pelatihan</a>
+          <a href="./pages/login.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</a>
+          <a href="./pages/register.php" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-all text-sm font-medium shadow hover:shadow-md">
+            <i class="fas fa-user mr-1"></i>Sign Up
+          </a>
         </div>
+      </div>
 
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="md:hidden hidden transition-all duration-300 ease-in-out">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-800">
-                <a href="./pages/pelatihan.php" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Pelatihan</a>
-                <a href="./pages/login.php" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Login</a>
-                <a href="./pages/register.php" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-200 mt-2 text-center shadow-sm">Daftar</a>
-            </div>
+      <!-- Mobile menu button -->
+      <div class="md:hidden flex items-center">
+        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-primary focus:outline-none transition-colors">
+          <span class="sr-only">Open main menu</span>
+          <!-- Hamburger icon -->
+          <svg id="menu-open-icon" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <!-- Close icon (hidden by default) -->
+          <svg id="menu-close-icon" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu (hidden by default) -->
+  <div id="mobile-menu" class="md:hidden hidden origin-top transition-all duration-300 ease-out">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
+      <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Beranda</a>
+      <a href="#produk" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Produk</a>
+      <a href="#lokasi" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Lokasi</a>
+      <a href="./pages/pelatihan.php" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Pelatihan</a>
+      <a href="./pages/login.php" class="block w-full text-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-base font-medium mt-2">
+        <i class="fas fa-user mr-1"></i>Masuk
+      </a>
+    </div>
+  </div>
+</nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-primary to-secondary text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80')] bg-cover bg-center"></div>
         </div>
-    </nav>
-
-    <!-- Main Hero -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-        <div class="text-center">
-            <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-6xl">
-                <span class="block">Tingkatkan Bisnis Anda</span>
-                <span class="block text-primary-600 dark:text-primary-400">Bersama UMKMHub</span>
-            </h1>
-            <p class="mt-5 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
-                Platform terbaik untuk mengembangkan usaha mikro, kecil, dan menengah Anda dengan pelatihan berkualitas dan jaringan bisnis yang luas.
-            </p>
-            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-                <a href="./pages/pelatihan.php" class="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 md:py-4 md:text-lg md:px-10 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                    Mulai Pelatihan
-                </a>
-                <a href="./pages/profile.php" class="px-8 py-3 border border-primary-600 text-base font-medium rounded-md text-primary-600 dark:text-primary-400 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 md:py-4 md:text-lg md:px-10 transition-colors duration-200 shadow hover:shadow-md">
-                    Lihat Profil UMKM
-                </a>
-            </div>
-        </div>
-
-        <!-- Feature Highlights -->
-        <div class="mt-20 grid grid-cols-1 gap-8 md:grid-cols-3">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div class="text-primary-600 dark:text-primary-400 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Pelatihan Berkualitas</h3>
-                <p class="text-gray-600 dark:text-gray-300">Akses materi pelatihan dari para ahli untuk meningkatkan keterampilan bisnis Anda.</p>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div class="text-primary-600 dark:text-primary-400 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Jaringan Bisnis</h3>
-                <p class="text-gray-600 dark:text-gray-300">Bangun jaringan dengan pelaku UMKM lainnya dan dapatkan peluang kolaborasi.</p>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div class="text-primary-600 dark:text-primary-400 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Analisis Bisnis</h3>
-                <p class="text-gray-600 dark:text-gray-300">Pantau perkembangan bisnis Anda dengan tools analisis yang kami sediakan.</p>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">UMKMHub</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Platform pengembangan usaha mikro, kecil, dan menengah terbaik di Indonesia.</p>
-                </div>
-                <div>
-                    <h4 class="text-md font-semibold text-gray-900 dark:text-white mb-4">Tautan Cepat</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">Beranda</a></li>
-                        <li><a href="./pages/pelatihan.php" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">Pelatihan</a></li>
-                        <li><a href="./pages/profile.php" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">Profil UMKM</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-md font-semibold text-gray-900 dark:text-white mb-4">Bantuan</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">FAQ</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">Kontak Kami</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">Kebijakan Privasi</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-md font-semibold text-gray-900 dark:text-white mb-4">Hubungi Kami</h4>
-                    <p class="text-gray-600 dark:text-gray-300 mb-2">info@umkmhub.id</p>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">+62 123 4567 890</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-gray-500 dark:text-gray-400 text-sm">
-                <p>&copy; 2023 UMKMHub. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // Dark mode toggle (you can add a button for this)
-        // function toggleDarkMode() {
-        //     document.documentElement.classList.toggle('dark');
-        //     localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
-        // }
         
-        // // Check for dark mode preference
-        // if (localStorage.getItem('darkMode') === 'true' || 
-        //     (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        //     document.documentElement.classList.add('dark');
-        // }
-    </script>
-</body>
+        <div class="max-w-7xl mx-auto px-4 py-24 md:py-32 relative z-10">
+            <div class="max-w-3xl mx-auto text-center animate-fade-in">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    Temukan <span class="text-accent">UMKM</span> di Seluruh Indonesia
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                    Platform direktori UMKM terintegrasi untuk menemukan produk lokal berkualitas dari berbagai provinsi dan kabupaten/kota di Indonesia.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#produk" class="bg-accent hover:bg-yellow-500 text-dark font-bold px-8 py-4 rounded-lg transition transform hover:scale-105 shadow-lg">
+                        Jelajahi Produk <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#umkm" class="bg-white hover:bg-gray-100 text-primary font-bold px-8 py-4 rounded-lg transition transform hover:scale-105 shadow-lg">
+                        Daftarkan UMKM <i class="fas fa-store ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-white transform skew-y-1 -mb-8 z-0"></div>
+    </section>
 
+    <!-- Stats Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-light p-6 rounded-xl shadow-sm animate-fade-in delay-100">
+                    <div class="text-4xl font-bold text-primary mb-2">34</div>
+                    <div class="text-gray-600">Provinsi</div>
+                </div>
+                <div class="bg-light p-6 rounded-xl shadow-sm animate-fade-in delay-200">
+                    <div class="text-4xl font-bold text-primary mb-2">514</div>
+                    <div class="text-gray-600">Kabupaten/Kota</div>
+                </div>
+                <div class="bg-light p-6 rounded-xl shadow-sm animate-fade-in delay-300">
+                    <div class="text-4xl font-bold text-primary mb-2">65K+</div>
+                    <div class="text-gray-600">UMKM Terdaftar</div>
+                </div>
+                <div class="bg-light p-6 rounded-xl shadow-sm animate-fade-in delay-300">
+                    <div class="text-4xl font-bold text-primary mb-2">24/7</div>
+                    <div class="text-gray-600">Layanan Dukungan</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Map Section -->
+    <section id="lokasi" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Jelajahi UMKM Berdasarkan <span class="text-primary">Lokasi</span></h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Temukan produk UMKM dari berbagai daerah di seluruh Indonesia.
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3">
+                    <!-- Map Visualization -->
+                    <div class="lg:col-span-2 p-6">
+                        <div class="map-container h-full min-h-[400px]">
+                            <div id="indonesia-map"></div>
+                            <div class="loading-indicator">
+                                <div class="text-center p-4 bg-white bg-opacity-90 rounded-lg shadow-sm">
+                                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+                                    <p class="text-gray-700 font-medium">Memuat peta interaktif...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Location List -->
+                    <div class="bg-gray-50 p-6 border-t lg:border-t-0 lg:border-l border-gray-200">
+                        <h3 class="text-xl font-bold text-dark mb-4">Provinsi Populer</h3>
+                        <div class="space-y-3 max-h-[360px] overflow-y-auto pr-2" id="province-list">
+                            <!-- Province items will be added by JavaScript -->
+                        </div>
+                        
+                        <div class="mt-6">
+                            <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                                Lihat Semua Provinsi <i class="fas fa-chevron-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  <!-- Featured Products -->
+  <section id="produk" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Produk <span class="text-primary">Unggulan</span></h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Temukan berbagai produk berkualitas dari UMKM di seluruh Indonesia.
+        </p>
+      </div>
+      
+      <div class="flex justify-center mb-8">
+        <div class="inline-flex rounded-md shadow-sm">
+          <button class="px-4 py-2 text-sm font-medium rounded-l-lg bg-primary text-white">
+            Semua
+          </button>
+          <button class="px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-100">
+            Makanan
+          </button>
+          <button class="px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-100">
+            Kerajinan
+          </button>
+          <button class="px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-100">
+            Fashion
+          </button>
+          <button class="px-4 py-2 text-sm font-medium rounded-r-lg bg-white text-gray-700 hover:bg-gray-100">
+            Lainnya
+          </button>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Product 1 -->
+        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1392&q=80" alt="Keripik Singkong Pedas" class="w-full h-48 object-cover">
+            <div class="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+              Terlaris
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-lg mb-1">Keripik Singkong Pedas</h3>
+              <button class="text-gray-400 hover:text-primary">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Jawa Barat</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-500 text-sm ml-2">(48)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-primary">Rp 15.000</span>
+              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
+                <i class="fas fa-cart-plus mr-1"></i> Beli
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Product 2 -->
+        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80" alt="Tas Rajut Modern" class="w-full h-48 object-cover">
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-lg mb-1">Tas Rajut Modern</h3>
+              <button class="text-gray-400 hover:text-primary">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Jawa Tengah</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+              </div>
+              <span class="text-gray-500 text-sm ml-2">(32)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-primary">Rp 120.000</span>
+              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
+                <i class="fas fa-cart-plus mr-1"></i> Beli
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Product 3 -->
+        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Kopi Arabika" class="w-full h-48 object-cover">
+            <div class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+              Baru
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-lg mb-1">Kopi Arabika Gayo</h3>
+              <button class="text-gray-400 hover:text-primary">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Aceh</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <span class="text-gray-500 text-sm ml-2">(65)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-primary">Rp 45.000</span>
+              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
+                <i class="fas fa-cart-plus mr-1"></i> Beli
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Product 4 -->
+        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sabun Herbal Alami" class="w-full h-48 object-cover">
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-lg mb-1">Sabun Herbal Alami</h3>
+              <button class="text-gray-400 hover:text-primary">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Bali</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-500 text-sm ml-2">(54)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-primary">Rp 35.000</span>
+              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
+                <i class="fas fa-cart-plus mr-1"></i> Beli
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-10">
+        <button class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold px-6 py-3 rounded-lg transition">
+          Lihat Semua Produk <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+<!-- UMKM Registration Section -->
+<section id="umkm" class="py-16 md:py-24 bg-gray-50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 leading-tight">
+        Daftarkan <span class="text-primary">UMKM</span> Anda
+      </h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Bergabunglah dengan platform kami untuk menjangkau lebih banyak pelanggan dan mengembangkan bisnis Anda.
+      </p>
+    </div>
+    
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-12 items-start">
+      <!-- Benefits Column -->
+      <div class="animate-fade-in order-2 lg:order-1">
+        <div class="bg-primary/5 p-6 sm:p-8 rounded-2xl border border-primary/10 shadow-sm hover:shadow-md transition-shadow">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Keuntungan Bergabung</h3>
+          <ul class="space-y-5">
+            <li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white/50 transition">
+              <div class="flex-shrink-0 mt-0.5">
+                <div class="h-7 w-7 rounded-full bg-primary text-white flex items-center justify-center shadow-sm">
+                  <i class="fas fa-check text-xs"></i>
+                </div>
+              </div>
+              <div>
+                <p class="text-gray-700">
+                  <span class="font-semibold text-gray-800">Promosi Gratis</span> - Produk Anda akan dipromosikan ke ribuan pengunjung.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white/50 transition">
+              <div class="flex-shrink-0 mt-0.5">
+                <div class="h-7 w-7 rounded-full bg-primary text-white flex items-center justify-center shadow-sm">
+                  <i class="fas fa-check text-xs"></i>
+                </div>
+              </div>
+              <div>
+                <p class="text-gray-700">
+                  <span class="font-semibold text-gray-800">Pelatihan Bisnis</span> - Akses ke workshop dan materi pengembangan UMKM.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white/50 transition">
+              <div class="flex-shrink-0 mt-0.5">
+                <div class="h-7 w-7 rounded-full bg-primary text-white flex items-center justify-center shadow-sm">
+                  <i class="fas fa-check text-xs"></i>
+                </div>
+              </div>
+              <div>
+                <p class="text-gray-700">
+                  <span class="font-semibold text-gray-800">Akses Pasar</span> - Jangkau pelanggan di seluruh Indonesia melalui platform kami.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white/50 transition">
+              <div class="flex-shrink-0 mt-0.5">
+                <div class="h-7 w-7 rounded-full bg-primary text-white flex items-center justify-center shadow-sm">
+                  <i class="fas fa-check text-xs"></i>
+                </div>
+              </div>
+              <div>
+                <p class="text-gray-700">
+                  <span class="font-semibold text-gray-800">Dukungan Pemerintah</span> - Fasilitas khusus dari pemerintah untuk UMKM terdaftar.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Registration Form Column -->
+      <div class="animate-fade-in delay-200 order-1 lg:order-2">
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+          <!-- Form Header -->
+          <div class="bg-gradient-to-r from-primary to-secondary p-6">
+            <h3 class="text-2xl font-bold text-white text-center">Form Pendaftaran UMKM</h3>
+          </div>
+          
+          <!-- Form Content -->
+          <div class="p-6 sm:p-8">
+            <form class="space-y-5">
+              <!-- Business Name -->
+              <div>
+                <label for="nama" class="block text-gray-700 font-medium mb-2">Nama UMKM <span class="text-red-500">*</span></label>
+                <input type="text" id="nama" required 
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+              </div>
+              
+              <!-- Owner Name -->
+              <div>
+                <label for="pemilik" class="block text-gray-700 font-medium mb-2">Nama Pemilik <span class="text-red-500">*</span></label>
+                <input type="text" id="pemilik" required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+              </div>
+              
+              <!-- Location -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="provinsi" class="block text-gray-700 font-medium mb-2">Provinsi <span class="text-red-500">*</span></label>
+                  <select id="provinsi" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                    <option value="">Pilih Provinsi</option>
+                    <option value="1">Jawa Barat</option>
+                    <option value="2">Jawa Tengah</option>
+                    <option value="3">Jawa Timur</option>
+                    <option value="4">DKI Jakarta</option>
+                    <option value="5">Banten</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="kabkota" class="block text-gray-700 font-medium mb-2">Kabupaten/Kota <span class="text-red-500">*</span></label>
+                  <select id="kabkota" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                    <option value="">Pilih Kabupaten/Kota</option>
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Business Category -->
+              <div>
+                <label for="kategori" class="block text-gray-700 font-medium mb-2">Kategori Usaha <span class="text-red-500">*</span></label>
+                <select id="kategori" required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                  <option value="">Pilih Kategori</option>
+                  <option value="makanan">Makanan & Minuman</option>
+                  <option value="kerajinan">Kerajinan Tangan</option>
+                  <option value="fashion">Fashion & Aksesoris</option>
+                  <option value="jasa">Jasa</option>
+                  <option value="lainnya">Lainnya</option>
+                </select>
+              </div>
+              
+              <!-- Address -->
+              <div>
+                <label for="alamat" class="block text-gray-700 font-medium mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
+                <textarea id="alamat" rows="3" required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"></textarea>
+              </div>
+              
+              <!-- Contact -->
+              <div>
+                <label for="kontak" class="block text-gray-700 font-medium mb-2">Nomor WhatsApp <span class="text-red-500">*</span></label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span class="text-gray-500">+62</span>
+                  </div>
+                  <input type="tel" id="kontak" required
+                    class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                    placeholder="812-3456-7890">
+                </div>
+              </div>
+              
+              <!-- Submit Button -->
+              <button type="submit" 
+                class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:-translate-y-0.5 shadow-md hover:shadow-lg">
+                Daftar Sekarang <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+              
+              <p class="text-sm text-gray-500 text-center">
+                Dengan mendaftar, Anda menyetujui <a href="#" class="text-primary hover:underline">Syarat & Ketentuan</a> kami.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+ <!-- Testimonials -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Apa Kata <span class="text-blue-600">Mereka</span></h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Testimoni dari UMKM yang telah merasakan manfaat platform kami
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- Testimonial 1 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border border-gray-100 transform hover:-translate-y-2">
+        <div class="flex items-center mb-6">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Budi Santoso" class="w-14 h-14 rounded-full mr-4 object-cover border-2 border-blue-100">
+          <div>
+            <h4 class="font-bold text-lg text-gray-800">Budi Santoso</h4>
+            <p class="text-gray-500 text-sm">UMKM Keripik Singkong, Jawa Barat</p>
+          </div>
+        </div>
+        <div class="text-gray-600 mb-6 italic relative">
+          <svg class="absolute -top-4 -left-2 w-8 h-8 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+          </svg>
+          "Sejak bergabung dengan platform ini, penjualan kami meningkat pesat. Banyak pelanggan baru yang datang dari berbagai daerah."
+          <svg class="absolute -bottom-4 -right-2 w-8 h-8 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+          </svg>
+        </div>
+        <div class="flex text-yellow-400 text-lg">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+      </div>
+      
+      <!-- Testimonial 2 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl duration-300 border border-gray-100 transform hover:-translate-y-2 transition-transform">
+        <div class="flex items-center mb-6">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Siti Aminah" class="w-14 h-14 rounded-full mr-4 object-cover border-2 border-blue-100">
+          <div>
+            <h4 class="font-bold text-lg text-gray-800">Siti Aminah</h4>
+            <p class="text-gray-500 text-sm">UMKM Tas Rajut, Jawa Tengah</p>
+          </div>
+        </div>
+        <div class="text-gray-600 mb-6 italic relative">
+          <svg class="absolute -top-4 -left-2 w-8 h-8 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+          </svg>
+          "Pelatihan yang diberikan sangat bermanfaat. Sekarang saya bisa mengelola keuangan bisnis dengan lebih baik dan produk saya terjual hingga ke luar kota."
+          <svg class="absolute -bottom-4 -right-2 w-8 h-8 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+          </svg>
+        </div>
+        <div class="flex text-yellow-400 text-lg">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+        </div>
+      </div>
+      
+      <!-- Testimonial 3 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl duration-300 border border-gray-100 transform hover:-translate-y-2 transition-transform">
+        <div class="flex items-center mb-6">
+          <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Ahmad Fauzi" class="w-14 h-14 rounded-full mr-4 object-cover border-2 border-blue-100">
+          <div>
+            <h4 class="font-bold text-lg text-gray-800">Ahmad Fauzi</h4>
+            <p class="text-gray-500 text-sm">UMKM Kopi Arabika, Aceh</p>
+          </div>
+        </div>
+        <div class="text-gray-600 mb-6 italic relative">
+          <svg class="absolute -top-4 -left-2 w-8 h-8 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+          </svg>
+          "Dukungan dari pemerintah melalui platform ini sangat membantu. Sekarang produk kopi saya bisa dikenal lebih luas dan omzet meningkat signifikan."
+          <svg class="absolute -bottom-4 -right-2 w-8 h-8 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+          </svg>
+        </div>
+        <div class="flex text-yellow-400 text-lg">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="tentang" class="py-16 md:py-24 bg-gray-50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <!-- Image Column -->
+      <div class="animate-fade-in order-2 md:order-1">
+        <div class="relative overflow-hidden rounded-xl shadow-lg aspect-w-16 aspect-h-9">
+          <img 
+            src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+            alt="Tentang UMKM Indonesia" 
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+            loading="lazy"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>
+        </div>
+      </div>
+
+      <!-- Content Column -->
+      <div class="animate-fade-in delay-100 order-1 md:order-2">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
+          Tentang <span class="text-primary">Direktori UMKM Indonesia</span>
+        </h2>
+        
+        <div class="space-y-4 mb-8">
+          <p class="text-gray-600 text-base lg:text-lg">
+            Direktori UMKM Indonesia adalah platform digital yang dibangun untuk mempromosikan dan mengembangkan Usaha Mikro, Kecil, dan Menengah (UMKM) di seluruh wilayah Indonesia.
+          </p>
+          <p class="text-gray-600 text-base lg:text-lg">
+            Kami berkomitmen untuk menjadi jembatan antara pelaku UMKM dengan konsumen, sekaligus memberikan berbagai fasilitas pendukung seperti pelatihan, akses pembiayaan, dan bantuan pemasaran digital berbasis lokasi.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Mission Card -->
+          <div class="bg-primary/10 px-4 py-3 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors">
+            <div class="flex items-center">
+              <div class="bg-primary text-white p-2 rounded-full mr-3 flex-shrink-0">
+                <i class="fas fa-bullseye text-sm"></i>
+              </div>
+              <span class="font-medium text-gray-700 text-sm sm:text-base">Misi: Memberdayakan UMKM lokal</span>
+            </div>
+          </div>
+          
+          <!-- Vision Card -->
+          <div class="bg-primary/10 px-4 py-3 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors">
+            <div class="flex items-center">
+              <div class="bg-primary text-white p-2 rounded-full mr-3 flex-shrink-0">
+                <i class="fas fa-eye text-sm"></i>
+              </div>
+              <span class="font-medium text-gray-700 text-sm sm:text-base">Visi: UMKM Indonesia go digital</span>
+            </div>
+          </div>
+          
+          <!-- Strategy Card -->
+          <div class="bg-primary/10 px-4 py-3 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors sm:col-span-2 lg:col-span-1">
+            <div class="flex items-center">
+              <div class="bg-primary text-white p-2 rounded-full mr-3 flex-shrink-0">
+                <i class="fas fa-chart-line text-sm"></i>
+              </div>
+              <span class="font-medium text-gray-700 text-sm sm:text-base">Strategi: Kemitraan daerah</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Newsletter -->
+  <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Dapatkan Info Terbaru</h2>
+        <p class="text-xl opacity-90 mb-8">
+          Berlangganan newsletter kami untuk mendapatkan informasi terbaru tentang program UMKM, pelatihan, dan promo menarik berdasarkan lokasi Anda.
+        </p>
+        <form class="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
+          <div class="flex-grow">
+            <input type="email" placeholder="Alamat email Anda" class="w-full px-6 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent">
+          </div>
+          <div class="location-selector flex-grow">
+            <select class="w-full px-6 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent">
+              <option value="">Pilih Provinsi</option>
+              <option value="1">Jawa Barat</option>
+              <option value="2">Jawa Tengah</option>
+              <option value="3">Jawa Timur</option>
+              <option value="4">DKI Jakarta</option>
+              <option value="5">Banten</option>
+            </select>
+          </div>
+          <button type="submit" class="bg-accent hover:bg-yellow-500 text-dark font-bold px-8 py-3 rounded-lg transition whitespace-nowrap">
+            Berlangganan <i class="fas fa-paper-plane ml-2"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="kontak" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Hubungi <span class="text-primary">Kami</span></h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Kami siap membantu Anda. Silakan hubungi tim kami melalui berbagai cara berikut.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-12">
+        <div class="animate-fade-in">
+          <div class="bg-light rounded-xl p-6 h-full">
+            <h3 class="text-xl font-bold text-dark mb-6">Informasi Kontak</h3>
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mt-1">
+                  <div class="h-10 w-10 rounded-full bg-primary bg-opacity-10 text-primary flex items-center justify-center">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <h4 class="font-bold text-gray-800">Alamat</h4>
+                  <p class="text-gray-600">Gedung Kementerian UMKM, Jl. Jend. Sudirman Kav. 1, Jakarta Pusat</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mt-1">
+                  <div class="h-10 w-10 rounded-full bg-primary bg-opacity-10 text-primary flex items-center justify-center">
+                    <i class="fas fa-phone-alt"></i>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <h4 class="font-bold text-gray-800">Telepon</h4>
+                  <p class="text-gray-600">(021) 1234567</p>
+                  <p class="text-gray-600">+62 812 3456 7890 (WhatsApp)</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mt-1">
+                  <div class="h-10 w-10 rounded-full bg-primary bg-opacity-10 text-primary flex items-center justify-center">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <h4 class="font-bold text-gray-800">Email</h4>
+                  <p class="text-gray-600">info@umkm-indonesia.go.id</p>
+                  <p class="text-gray-600">umkm@kemenkopukm.go.id</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mt-1">
+                  <div class="h-10 w-10 rounded-full bg-primary bg-opacity-10 text-primary flex items-center justify-center">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <h4 class="font-bold text-gray-800">Jam Operasional</h4>
+                  <p class="text-gray-600">Senin - Jumat: 08.00 - 16.00 WIB</p>
+                  <p class="text-gray-600">Sabtu: 08.00 - 14.00 WIB</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="animate-fade-in delay-100">
+          <div class="bg-white border border-gray-200 rounded-xl shadow-md p-6 h-full">
+            <h3 class="text-xl font-bold text-dark mb-6">Kirim Pesan</h3>
+            <form>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label for="name" class="block text-gray-700 font-medium mb-2">Nama Lengkap</label>
+                  <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                  <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                  <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="subject" class="block text-gray-700 font-medium mb-2">Subjek</label>
+                <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                <label for="message" class="block text-gray-700 font-medium mb-2">Pesan</label>
+                <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+              </div>
+              <div>
+                <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-lg transition">
+                  Kirim Pesan <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <div class="bg-gray-100 h-96">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.923516761292!2d106.82255731537056!3d-6.897718195019382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6849e9a9f06a45%3A0x2a5e5d3c2297f6b5!2sKementerian%20Koperasi%20dan%20UKM%20RI!5e0!3m2!1sid!2sid!4v1621234567890!5m2!1sid!2sid" 
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy"
+      class="filter grayscale(20%) contrast(110%)">
+    </iframe>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white pt-16 pb-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div>
+          <div class="flex items-center mb-4">
+            <img src="https://via.placeholder.com/40" alt="Logo UMKM Indonesia" class="h-8 w-auto mr-2">
+            <span class="text-xl font-bold text-white">UMKM<span class="text-accent">Indonesia</span></span>
+          </div>
+          <p class="text-gray-400 mb-4">
+            Platform resmi untuk pengembangan dan promosi UMKM lokal di seluruh Indonesia.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">Tautan Cepat</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Beranda</a></li>
+            <li><a href="#produk" class="text-gray-400 hover:text-white transition">Produk</a></li>
+            <li><a href="#lokasi" class="text-gray-400 hover:text-white transition">Lokasi</a></li>
+            <li><a href="#umkm" class="text-gray-400 hover:text-white transition">Daftar UMKM</a></li>
+            <li><a href="#tentang" class="text-gray-400 hover:text-white transition">Tentang Kami</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">Layanan</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Pelatihan UMKM</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Pendampingan Bisnis</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Akses Pembiayaan</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Pemasaran Digital</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Legalitas Usaha</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">Kontak</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-3"></i>
+              <span class="text-gray-400">Gedung Kementerian UMKM, Jl. Jend. Sudirman Kav. 1, Jakarta Pusat</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-phone-alt text-gray-400 mt-1 mr-3"></i>
+              <span class="text-gray-400">(021) 1234567</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-envelope text-gray-400 mt-1 mr-3"></i>
+              <span class="text-gray-400">info@umkm-indonesia.go.id</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-500 text-sm mb-4 md:mb-0">
+            &copy; 2023 Direktori UMKM Indonesia. Hak Cipta Dilindungi.
+          </p>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition">Kebijakan Privasi</a>
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition">Syarat & Ketentuan</a>
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition">FAQ</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Load amCharts resources -->
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/indonesiaLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+</head>
+<body>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
 </html>
