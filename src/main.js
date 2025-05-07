@@ -1,12 +1,8 @@
-// Fungsi untuk inisialisasi peta
 function initIndonesiaMap() {
-  // Buat root element
   const root = am5.Root.new('indonesia-map');
 
-  // Set tema
   root.setThemes([am5themes_Animated.new(root)]);
 
-  // Buat chart peta
   const chart = root.container.children.push(
     am5map.MapChart.new(root, {
       panX: 'none',

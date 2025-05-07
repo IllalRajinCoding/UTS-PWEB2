@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 include '../config/koneksi.php';
 ?>  
@@ -225,3 +226,6 @@ include '../config/koneksi.php';
 // Tutup koneksi database
 mysqli_close($conn);
 ?>
+=======
+=
+>>>>>>> a67be81f3229afe9ed9265ec6424811c7079d96c
