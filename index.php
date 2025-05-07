@@ -25,8 +25,8 @@
       theme: {
         extend: {
           colors: {
-            primary: '#2563eb',
-            secondary: '#1e40af',
+            primary: '#4D55CC',
+            secondary: '#2DAA9E',
             accent: '#f59e0b',
             dark: '#1f2937',
             light: '#f3f4f6',
@@ -116,13 +116,13 @@
       <!-- Desktop menu -->
       <div class="hidden md:block">
         <div class="ml-10 flex items-center space-x-4">
-          <a href="#" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
+          <a href="" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
           <a href="#produk" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Produk</a>
           <a href="#lokasi" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Lokasi</a>
           <a href="./pages/pelatihan.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Pelatihan</a>
           <a href="./pages/login.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</a>
           <a href="./pages/register.php" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-all text-sm font-medium shadow hover:shadow-md">
-            <i class="fas fa-user mr-1"></i>Sign Up
+            <i class="fas fa-user mr-1"></i>Login
           </a>
         </div>
       </div>
