@@ -1,12 +1,9 @@
-// src/theme.js
 document.addEventListener("DOMContentLoaded", function () {
-  // Versi paling sederhana yang pasti bekerja
   document.getElementById("toggle").addEventListener("click", function () {
     const html = document.documentElement;
     const isDark = html.classList.toggle("dark");
     localStorage.setItem("theme", isDark ? "dark" : "light");
 
-    // Animasi icon
     this.querySelector("svg path").style.transform = isDark
       ? "rotate(180deg)"
       : "rotate(0deg)";

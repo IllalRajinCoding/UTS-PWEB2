@@ -56,6 +56,28 @@ class UMKM
         $result = mysqli_query($this->koneksi, $query);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
+
+    public function delete($id)
+    {
+        $stmt = $this->koneksi->prepare("DELETE FROM umkm WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $result = $stmt->execute();
+        if (!$result) {
+            error_log("Error deleting UMKM data: " . $stmt->error);
+        }
+        return $result;
+    }
+
+    public function readQuery()
+    {
+        $query = "SELECT u.*, k.nama as kategori, p.nama as pembina, kb.nama as kabkota FROM umkm u
+                  LEFT JOIN kategori_umkm k ON u.kategori_umkm_id = k.id
+                  LEFT JOIN pembina p ON u.pembina_id = p.id
+                  LEFT JOIN kabkota kb ON u.kabkota_id = kb.id
+                  ORDER BY u.nama ASC";
+        $result = mysqli_query($this->koneksi, $query);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 }
 
 $umkm = new UMKM($koneksi);
@@ -73,6 +95,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 $kategori_umkm = $umkm->getKategoriUMKM();
 $pembina_data = $umkm->getPembina();
 $kabkota_data = $umkm->getKabKota();
+$data_umkm = $umkm->readQuery();
+
+if (isset($_GET['delete'])) {
+    $id = intval($_GET['delete']);
+    if ($umkm->delete($id)) {
+        $_SESSION['message'] = 'Data UMKM berhasil dihapus!';
+    } else {
+        $_SESSION['message'] = 'Gagal menghapus data UMKM!';
+    }
+    header('Location: umkm.php');
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +116,7 @@ $kabkota_data = $umkm->getKabKota();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Data UMKM</title>
+    <title>Data UMKM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -105,83 +140,98 @@ $kabkota_data = $umkm->getKabKota();
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
-                    <span class="text-xl font-bold text-gray-900 dark:text-white">Tambah Data UMKM</span>
+                    <span class="text-xl font-bold text-gray-900 dark:text-white">Data UMKM</span>
                 </div>
             </div>
         </div>
     </nav>
+
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 transition-colors duration-300">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center">
+                    <i class="fas fa-store text-primary dark:text-primary-300 mr-2"></i>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Daftar UMKM</h2>
+                </div>
+                <div class="relative w-full md:w-64">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                    <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm text-gray-900 dark:text-white" placeholder="Cari UMKM...">
+                </div>
+            </div>
 
-        <?php
-        $query = "SELECT u.*, k.nama as kategori, p.nama as pembina, kb.nama as kabkota FROM umkm u
-              LEFT JOIN kategori_umkm k ON u.kategori_umkm_id = k.id
-              LEFT JOIN pembina p ON u.pembina_id = p.id
-              LEFT JOIN kabkota kb ON u.kabkota_id = kb.id
-              ORDER BY u.nama ASC";
-        $data_umkm = mysqli_query($koneksi, $query);
-        ?>
-
-        <div class="mt-10">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <i class="fas fa-database mr-2 text-primary"></i> Data UMKM Terdaftar
-            </h2>
-            <div class="overflow-auto rounded-lg shadow border border-gray-200 dark:border-gray-700">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm text-left">
-                    <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-4 py-3">Nama</th>
-                            <th class="px-4 py-3">Modal</th>
-                            <th class="px-4 py-3">Alamat</th>
-                            <th class="px-4 py-3">Website</th>
-                            <th class="px-4 py-3">Email</th>
-                            <th class="px-4 py-3">Rating</th>
-                            <th class="px-4 py-3">Kategori</th>
-                            <th class="px-4 py-3">Kab/Kota</th>
-                            <th class="px-4 py-3">Pembina</th>
-                            <th class="px-4 py-3">Aksi</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">No</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
+                            <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Modal</th>
+                            <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Alamat</th>
+                            <th scope="col" class="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Website</th>
+                            <th scope="col" class="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Rating</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kategori</th>
+                            <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kab/Kota</th>
+                            <th scope="col" class="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Pembina</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        <?php while ($row = mysqli_fetch_assoc($data_umkm)): ?>
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                                <td class="px-4 py-2 text-gray-900 dark:text-white"><?= htmlspecialchars($row['nama']) ?></td>
-                                <td class="px-4 py-2"><?= htmlspecialchars($row['modal']) ?></td>
-                                <td class="px-4 py-2"><?= htmlspecialchars($row['alamat']) ?></td>
-                                <td class="px-4 py-2"><a href="<?= htmlspecialchars($row['website']) ?>" class="text-primary hover:underline" target="_blank"><?= htmlspecialchars($row['website']) ?></a></td>
-                                <td class="px-4 py-2"><?= htmlspecialchars($row['email']) ?></td>
-                                <td class="px-4 py-2"><?= htmlspecialchars($row['rating']) ?></td>
-                                <td class="px-4 py-2"><?= htmlspecialchars($row['kategori']) ?></td>
-                                <td class="px-4 py-2"><?= htmlspecialchars($row['kabkota']) ?></td>
-                                <td class="px-4 py-2"><?= htmlspecialchars($row['pembina']) ?></td>
-                                <td class="px-4 py-2">
-                                    <div class="flex space-x-2">
-                                        <!-- Edit Button -->
-                                        <a href="edit_umkm.php?id=<?= $row['id'] ?>" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <!-- Delete Button -->
-                                        <button onclick="confirmDelete(<?= $row['id'] ?>)" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
+                        <?php if (!empty($data_umkm)): ?>
+                            <?php foreach ($data_umkm as $i => $row): ?>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white"><?= $i + 1 ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($row['nama']) ?></td>
+                                    <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['modal']) ?></td>
+                                    <td class="hidden md:table-cell px-6 py-4 whitespace-normal text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['alamat']) ?></td>
+                                    <td class="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-blue-400 hover:underline"><a href="<?= htmlspecialchars($row['website']) ?>" target="_blank"><?= htmlspecialchars($row['website']) ?></a></td>
+                                    <td class="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['email']) ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['rating']) ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white"><?= htmlspecialchars($row['kategori']) ?></td>
+                                    <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['kabkota']) ?></td>
+                                    <td class="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['pembina']) ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <a href="edit_umkm.php?id=<?= $row['id'] ?>" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors duration-200">
+                                                <i class="fas fa-edit mr-1"></i>Edit
+                                            </a>
+                                            <button onclick="confirmDelete(<?= $row['id'] ?>)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors duration-200">
+                                                <i class="fas fa-trash mr-1"></i>Hapus
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="11" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                                    Tidak ada data UMKM yang tersedia
                                 </td>
                             </tr>
-                        <?php endwhile; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-700">
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                    Menampilkan <span id="countResults" class="font-medium"><?= count($data_umkm) ?></span> UMKM
+                </div>
             </div>
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-colors duration-300 mt-8">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                    <i class="fas fa-store text-primary mr-2"></i> Form Tambah UMKM
-                </h2>
+                <div class="flex items-center">
+                    <i class="fas fa-plus-circle text-primary dark:text-primary-300 mr-2"></i>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Tambah Data UMKM</h2>
+                </div>
             </div>
             <div class="px-6 py-4">
                 <form method="post" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- input fields -->
                         <div>
                             <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama UMKM</label>
                             <input type="text" id="nama" name="nama" placeholder="Nama UMKM" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
@@ -247,18 +297,48 @@ $kabkota_data = $umkm->getKabKota();
         </div>
     </main>
 
+    <script src="../src/index.js"></script>
     <script>
-        // Delete confirmation function
         function confirmDelete(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                window.location.href = 'delete_umkm.php?id=' + id;
+                window.location.href = '?delete=' + id;
             }
         }
 
-        // Dark mode toggle
-        const toggle = document.getElementById('toggle');
-        toggle?.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const nama = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const modal = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                const alamat = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const website = row.querySelector('td:nth-child(5) a')?.textContent.toLowerCase() || '';
+                const email = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+                const kategori = row.querySelector('td:nth-child(8)').textContent.toLowerCase();
+                const kabkota = row.querySelector('td:nth-child(9)').textContent.toLowerCase();
+                const pembina = row.querySelector('td:nth-child(10)').textContent.toLowerCase();
+
+                if (
+                    nama.includes(searchValue) ||
+                    modal.includes(searchValue) ||
+                    alamat.includes(searchValue) ||
+                    website.includes(searchValue) ||
+                    email.includes(searchValue) ||
+                    kategori.includes(searchValue) ||
+                    kabkota.includes(searchValue) ||
+                    pembina.includes(searchValue)
+                ) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            document.getElementById('countResults').textContent = visibleCount;
         });
     </script>
 

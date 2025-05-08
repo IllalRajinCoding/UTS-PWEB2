@@ -7,8 +7,20 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="../src/output.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361ee',
+                        secondary: '#3f37c9',
+                    },
+                },
+            },
+        };
+    </script>
     <style>
-        /* Custom styles for backdrop blur */
         .backdrop-blur {
             position: fixed;
             top: 0;
@@ -23,136 +35,148 @@
 
         .mobile-menu {
             z-index: 50;
-            position: relative;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
         }
     </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4361ee',
-                        secondary: '#3f37c9',
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 
-<body class="bg-gray-100 dark:bg-sky-900">
+<body class="bg-gradient-to-br from-gray-100 to-white dark:from-sky-900 dark:to-gray-800 min-h-screen">
+    <nav class="bg-white/80 dark:bg-gray-900/80 shadow backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-screen-xl mx-auto flex items-center justify-between p-4">
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:text-primary transition">
+                    <!-- Default icon (will be updated by JS) -->
+                    <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <!-- Matahari (sun) -->
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
 
-    <nav class="bg-white border-gray-200 dark:bg-gray-900">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <button id="toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 mr-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path id="toggle-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-            </button>
-            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Dashboard</span>
-            </a>
-
-            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-                <span class="sr-only">Open main menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
-                </svg>
-            </button>
-
-            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                    <li>
-                        <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Data UMKM</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Data Kota</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Data Pembina</a>
-                    </li>
-                    <li>
-                        <a href="../prosess/logout.php" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
-                    </li>
-                </ul>
+                <span class="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</span>
             </div>
+            <div class="md:hidden">
+                <button id="hamburger"
+                    class="text-gray-600 dark:text-gray-300 hover:text-primary focus:outline-none focus:ring">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <ul id="navbar-default"
+                class="hidden md:flex space-x-6 font-medium text-gray-700 dark:text-gray-200">
+                <li><a href="#" class="hover:text-primary transition-colors">Home</a></li>
+                <li><a href="#" class="hover:text-primary transition-colors">Data UMKM</a></li>
+                <li><a href="#" class="hover:text-primary transition-colors">Data Kota</a></li>
+                <li><a href="#" class="hover:text-primary transition-colors">Data Pembina</a></li>
+                <li><a href="../prosess/logout.php"
+                        class="hover:text-red-500 transition-colors font-semibold">Logout</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- Backdrop blur effect -->
     <div id="backdrop-blur" class="backdrop-blur"></div>
-
-    <!-- Mobile menu (hidden by default) -->
-    <div class="hidden w-full md:hidden mobile-menu" id="mobile-menu">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-2 mx-4">
-            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">Home</a>
-            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">Data UMKM</a>
-            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">Data Kota</a>
-            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-blue-600 dark:hover:bg-blue-700">Data Pembina</a>
-            <a href="../prosess/logout.php" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-white hover:bg-red-600 dark:hover:bg-red-700">Logout</a>
-        </div>
+    <div id="mobile-menu"
+        class="mobile-menu hidden bg-white dark:bg-gray-800 rounded-b-lg shadow-lg p-4 mx-4">
+        <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Home</a>
+        <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Data UMKM</a>
+        <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Data Kota</a>
+        <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Data Pembina</a>
+        <a href="../prosess/logout.php" class="block py-2 text-red-600 hover:text-red-800 font-bold">Logout</a>
     </div>
 
-    <!-- main content -->
-    <main class="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] p-4 bg-gray-100 dark:bg-sky-900">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">Selamat datang di Dashboard</h1>
-            <p class="text-2xl font-semibold text-gray-700 dark:text-gray-300">Aplikasi Manajemen Data</p>
+    <main class="py-10 px-4 md:px-12 lg:px-24">
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-extrabold text-gray-800 dark:text-white">Selamat Datang</h1>
+            <p class="mt-2 text-xl text-gray-600 dark:text-gray-300">Aplikasi Manajemen Data UMKM</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
-            <!-- Card Data Pembina -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Data Pembina</h2>
-                <p class="text-gray-600 dark:text-gray-300">Kelola data pembina dan informasi terkait.</p>
-                <a href="../form/pembina.php" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Lihat Data</a>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div
+                class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Data Pembina</h2>
+                <p class="text-gray-600 dark:text-gray-400">Kelola data pembina dan informasi terkait.</p>
+                <a href="../form/pembina.php"
+                    class="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-lg shadow hover:bg-secondary transition">Lihat
+                    Data</a>
             </div>
 
-            <!-- Card Data Kategori UMKM -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Data Kategori UMKM</h2>
-                <p class="text-gray-600 dark:text-gray-300">Kelola kategori usaha mikro, kecil, dan menengah.</p>
-                <a href="../form/umkm.php" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Lihat Data</a>
+            <div
+                class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Data Kategori UMKM</h2>
+                <p class="text-gray-600 dark:text-gray-400">Kelola kategori usaha mikro, kecil, dan menengah.</p>
+                <a href="../form/umkm.php"
+                    class="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-lg shadow hover:bg-secondary transition">Lihat
+                    Data</a>
             </div>
 
-            <!-- Card Data Kabupaten/Kota -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Data Kabupaten/Kota</h2>
-                <p class="text-gray-600 dark:text-gray-300">Kelola data wilayah kabupaten dan kota.</p>
-                <a href="../form/kabkota.php" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Lihat Data</a>
+            <div
+                class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Data Kabupaten/Kota</h2>
+                <p class="text-gray-600 dark:text-gray-400">Kelola data wilayah kabupaten dan kota.</p>
+                <a href="../form/kabkota.php"
+                    class="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-lg shadow hover:bg-secondary transition">Lihat
+                    Data</a>
             </div>
         </div>
     </main>
 
+    <script src="../src/toggle.js"></script>
     <script>
-        // Hamburger menu toggle with backdrop effect
-        document.querySelector('[data-collapse-toggle="navbar-default"]').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const backdrop = document.getElementById('backdrop-blur');
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('backdrop-blur');
 
-            // Toggle menu and backdrop
+        hamburger.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
             backdrop.style.display = mobileMenu.classList.contains('hidden') ? 'none' : 'block';
-
-            // Prevent scrolling when menu is open
             document.body.style.overflow = mobileMenu.classList.contains('hidden') ? 'auto' : 'hidden';
         });
 
-        // Close menu when clicking on backdrop
-        document.getElementById('backdrop-blur').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const backdrop = document.getElementById('backdrop-blur');
-
+        backdrop.addEventListener('click', () => {
             mobileMenu.classList.add('hidden');
             backdrop.style.display = 'none';
             document.body.style.overflow = 'auto';
         });
     </script>
-    <script src="../src/toggle.js"></script>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        // Ganti icon
+        function updateIcon(isDark) {
+            themeIcon.innerHTML = isDark ?
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />` // Moon
+                :
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />`; // Sun
+        }
+
+        // Toggle dark mode
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateIcon(isDark);
+        });
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            const userTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = userTheme === 'dark' || (!userTheme && systemPrefersDark);
+
+            if (isDark) document.documentElement.classList.add('dark');
+            updateIcon(isDark);
+        });
+    </script>
+
 </body>
 
 </html>

@@ -124,7 +124,7 @@ $pembina_data = $pembina->readQuery();
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($row['nama']) ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            <?= $row['gender'] == 'L' ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200' : 'bg-pink-100 dark:text-pink-200' ?>">
+                                            <?= $row['gender'] == 'L' ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200' : 'bg-pink-100 dark:text-black' ?>">
                                             <?= $row['gender'] == 'L' ? 'Laki-Laki' : 'Perempuan' ?>
                                         </span>
                                     </td>
