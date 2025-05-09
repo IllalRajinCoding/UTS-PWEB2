@@ -1,3 +1,53 @@
+<?php
+include './config/koneksi.php';
+class umkmDisplay
+{
+  private $koneksi;
+
+  public function __construct($koneksi)
+  {
+    $this->koneksi = $koneksi;
+  }
+
+  public function getUmkm()
+  {
+    $query = "SELECT * FROM umkm";
+    $result = mysqli_query($this->koneksi, $query);
+    $umkm = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $umkm[] = $row;
+    }
+    return $umkm;
+  }
+}
+
+$umkmData = new umkmDisplay($koneksi);
+$listumkm = $umkmData->getUmkm();
+
+class KabupatenKota
+{
+  private $koneksi;
+
+  public function __construct($koneksi)
+  {
+    $this->koneksi = $koneksi;
+  }
+
+  public function getProvinsiList()
+  {
+    $query = "SELECT * FROM provinsi ORDER BY nama ASC";
+    $result = mysqli_query($this->koneksi, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+  }
+}
+
+$kabupatenKota = new KabupatenKota($koneksi);
+$provinsi_data = $kabupatenKota->getProvinsiList();
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -98,7 +148,8 @@
     /* Focus Styles for Accessibility */
     button:focus,
     a:focus {
-      outline: 2px solid #2563eb; /* Replace with the actual primary color value */
+      outline: 2px solid #2563eb;
+      /* Replace with the actual primary color value */
       outline-offset: 2px;
     }
   </style>
@@ -115,19 +166,18 @@
           <span class="ml-2 text-xl font-semibold text-primary">UMKM<span class="text-accent">Indonesia</span></span>
         </div>
 
-      <!-- Desktop menu -->
-      <div class="hidden md:block">
-        <div class="ml-10 flex items-center space-x-4">
-          <a href="#" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
-          <a href="#produk" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Produk</a>
-          <a href="#lokasi" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Lokasi</a>
-          <a href="./pages/pelatihan.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Pelatihan</a>
-          <a href="./pages/login.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</a>
-          <a href="./pages/register.php" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-all text-sm font-medium shadow hover:shadow-md">
-            <i class="fas fa-user mr-1"></i>Sign Up
-          </a>
+        <!-- Desktop menu -->
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-center space-x-4">
+            <a href="#" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
+            <a href="#produk" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Produk</a>
+            <a href="#lokasi" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Lokasi</a>
+            <a href="./pages/pelatihan.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Pelatihan</a>
+            <a href="./pages/login.php" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-all text-sm font-medium shadow hover:shadow-md">
+              <i class="fas fa-user mr-1"></i>Login
+            </a>
+          </div>
         </div>
-      </div>
 
         <!-- Mobile menu button -->
         <div class="md:hidden flex items-center">
@@ -260,172 +310,44 @@
   <section id="produk" class="py-16 bg-white">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Produk <span class="text-primary">Unggulan</span></h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Daftar <span class="text-primary">UMKM</span></h2>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Temukan berbagai produk berkualitas dari UMKM di seluruh Indonesia.
+          Temukan berbagai UMKM berkualitas dari seluruh Indonesia.
         </p>
       </div>
 
-      <div class="flex justify-center mb-8">
-        <div class="inline-flex rounded-md shadow-sm">
-          <button class="px-4 py-2 text-sm font-medium rounded-l-lg bg-primary text-white">
-            Semua
-          </button>
-          <button class="px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-100">
-            Makanan
-          </button>
-          <button class="px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-100">
-            Kerajinan
-          </button>
-          <button class="px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-100">
-            Fashion
-          </button>
-          <button class="px-4 py-2 text-sm font-medium rounded-r-lg bg-white text-gray-700 hover:bg-gray-100">
-            Lainnya
-          </button>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- Product 1 -->
-        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1392&q=80" alt="Keripik Singkong Pedas" class="w-full h-48 object-cover">
-            <div class="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
-              Terlaris
-            </div>
-          </div>
-          <div class="p-4">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-lg mb-1">Keripik Singkong Pedas</h3>
-              <button class="text-gray-400 hover:text-primary">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Jawa Barat</p>
-            <div class="flex items-center mb-3">
-              <div class="flex text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php foreach ($listumkm as $umkm) : ?>
+          <div class="bg-white rounded-lg shadow-lg  hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <div class="p-6">
+              <h3 class="text-x font-semibold text-gray-900 mb-2"><?= htmlspecialchars($umkm['nama']) ?></h3>
+              <div>
+                <img src="./src/assets/umkm.jpeg" alt="">
               </div>
-              <span class="text-gray-500 text-sm ml-2">(48)</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-primary">Rp 15.000</span>
-              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
-                <i class="fas fa-cart-plus mr-1"></i> Beli
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 2 -->
-        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80" alt="Tas Rajut Modern" class="w-full h-48 object-cover">
-          </div>
-          <div class="p-4">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-lg mb-1">Tas Rajut Modern</h3>
-              <button class="text-gray-400 hover:text-primary">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Jawa Tengah</p>
-            <div class="flex items-center mb-3">
-              <div class="flex text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
+              <p class="text-sm text-gray-500 mb-2">Pemilik: <?= htmlspecialchars($umkm['pemilik']) ?></p>
+              <p class="text-sm text-gray-500 mb-2">Modal: Rp <?= number_format($umkm['modal'], 0, ',', '.') ?></p>
+              <p class="text-sm text-gray-500 mb-2">Alamat: <?= htmlspecialchars($umkm['alamat']) ?></p>
+              <div class="flex items-center mb-2">
+                <?php
+                $rating = $umkm['rating'] ?? 0;
+                for ($i = 1; $i <= 5; $i++) {
+                  if ($i <= floor($rating)) {
+                    echo '<i class="fas fa-star text-yellow-400"></i>';
+                  } elseif ($i == ceil($rating) && $rating != floor($rating)) {
+                    echo '<i class="fas fa-star-half-alt text-yellow-400"></i>';
+                  } else {
+                    echo '<i class="far fa-star text-yellow-400"></i>';
+                  }
+                }
+                ?>
+                <span class="ml-1 text-xs text-gray-500">(<?= $rating ?>)</span>
               </div>
-              <span class="text-gray-500 text-sm ml-2">(32)</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-primary">Rp 120.000</span>
-              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
-                <i class="fas fa-cart-plus mr-1"></i> Beli
-              </button>
+              <?php if (!empty($umkm['website'])) : ?>
+                <a href="<?= htmlspecialchars($umkm['website']) ?>" target="_blank" class="text-sm text-blue-500 hover:underline block mb-2">Website</a>
+              <?php endif; ?>
             </div>
           </div>
-        </div>
-
-        <!-- Product 3 -->
-        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Kopi Arabika" class="w-full h-48 object-cover">
-            <div class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-              Baru
-            </div>
-          </div>
-          <div class="p-4">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-lg mb-1">Kopi Arabika Gayo</h3>
-              <button class="text-gray-400 hover:text-primary">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Aceh</p>
-            <div class="flex items-center mb-3">
-              <div class="flex text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <span class="text-gray-500 text-sm ml-2">(65)</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-primary">Rp 45.000</span>
-              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
-                <i class="fas fa-cart-plus mr-1"></i> Beli
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 4 -->
-        <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sabun Herbal Alami" class="w-full h-48 object-cover">
-          </div>
-          <div class="p-4">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-lg mb-1">Sabun Herbal Alami</h3>
-              <button class="text-gray-400 hover:text-primary">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <p class="text-gray-500 text-sm mb-2">Oleh: UMKM Bali</p>
-            <div class="flex items-center mb-3">
-              <div class="flex text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-              <span class="text-gray-500 text-sm ml-2">(54)</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-primary">Rp 35.000</span>
-              <button class="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-lg text-sm transition">
-                <i class="fas fa-cart-plus mr-1"></i> Beli
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center mt-10">
-        <button class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold px-6 py-3 rounded-lg transition">
-          Lihat Semua Produk <i class="fas fa-arrow-right ml-2"></i>
-        </button>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
@@ -771,12 +693,9 @@
           </div>
           <div class="location-selector flex-grow">
             <select class="w-full px-6 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent">
-              <option value="">Pilih Provinsi</option>
-              <option value="1">Jawa Barat</option>
-              <option value="2">Jawa Tengah</option>
-              <option value="3">Jawa Timur</option>
-              <option value="4">DKI Jakarta</option>
-              <option value="5">Banten</option>
+              <?php foreach ($provinsi_data as $provinsi): ?>
+                <option value="<?= $provinsi['id'] ?>"><?= htmlspecialchars($provinsi['nama']) ?></option>
+              <?php endforeach; ?>
             </select>
           </div>
           <button type="submit" class="bg-accent hover:bg-yellow-500 text-dark font-bold px-8 py-3 rounded-lg transition whitespace-nowrap">
@@ -990,6 +909,66 @@
   </button>
 
   <script type="module" src="./src/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuOpenIcon = document.getElementById('menu-open-icon');
+      const menuCloseIcon = document.getElementById('menu-close-icon');
+
+      // Fungsi untuk toggle menu mobile
+      function toggleMobileMenu() {
+        // Toggle visibility menu mobile
+        mobileMenu.classList.toggle('hidden');
+
+        // Toggle animasi
+        mobileMenu.classList.toggle('origin-top');
+        mobileMenu.classList.toggle('transition-all');
+        mobileMenu.classList.toggle('duration-300');
+        mobileMenu.classList.toggle('ease-out');
+
+        // Toggle icons
+        menuOpenIcon.classList.toggle('hidden');
+        menuCloseIcon.classList.toggle('hidden');
+      }
+
+      // Event listener untuk tombol menu mobile
+      mobileMenuButton.addEventListener('click', toggleMobileMenu);
+
+      // Tutup menu ketika mengklik item menu (untuk navigasi anchor)
+      const mobileMenuItems = mobileMenu.querySelectorAll('a[href^="#"]');
+      mobileMenuItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Tunggu sebentar sebelum menutup untuk memastikan navigasi terjadi
+          setTimeout(() => {
+            toggleMobileMenu();
+          }, 100);
+        });
+      });
+
+      // Tutup menu ketika mengklik di luar menu
+      document.addEventListener('click', function(event) {
+        const isClickInsideNavbar = event.target.closest('nav');
+        const isClickOnMenuButton = event.target.closest('#mobile-menu-button');
+        const isClickInsideMobileMenu = event.target.closest('#mobile-menu');
+
+        if (!mobileMenu.classList.contains('hidden') &&
+          isClickInsideNavbar &&
+          !isClickOnMenuButton &&
+          !isClickInsideMobileMenu) {
+          toggleMobileMenu();
+        }
+      });
+
+      // Tutup menu ketika ukuran layar berubah menjadi lebih besar (desktop)
+      window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768 && !mobileMenu.classList.contains('hidden')) {
+          toggleMobileMenu();
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

@@ -38,6 +38,7 @@ $pembina_data = mysqli_query($koneksi, "SELECT * FROM pembina ORDER BY nama ASC"
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $modal = mysqli_real_escape_string($koneksi, $_POST['modal']);
+    $pemilik = mysqli_real_escape_string($koneksi, $_POST['pemilik']);
     $alamat = mysqli_real_escape_string($koneksi, $_POST['alamat']);
     $website = mysqli_real_escape_string($koneksi, $_POST['website']);
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
@@ -49,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $update_query = "UPDATE umkm SET 
                     nama = ?,
                     modal = ?,
+                    pemilik = ?,
                     alamat = ?,
                     website = ?,
                     email = ?,
@@ -59,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     WHERE id = ?";
 
     $stmt = mysqli_prepare($koneksi, $update_query);
-    mysqli_stmt_bind_param($stmt, "ssssssiiii", $nama, $modal, $alamat, $website, $email, $rating, $kategori_umkm_id, $kabkota_id, $pembina_id, $id);
+    mysqli_stmt_bind_param($stmt, "sssssssiiii", $nama, $modal, $pemilik, $alamat, $website, $email, $rating, $kategori_umkm_id, $kabkota_id, $pembina_id, $id);
 
     if (mysqli_stmt_execute($stmt)) {
         $_SESSION['message'] = "Data UMKM berhasil diperbarui";
@@ -130,6 +132,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                 value="<?= htmlspecialchars($umkm['modal']) ?>" required>
                         </div>
                         <div class="md:col-span-2">
+                            <div>
+                                <label for="pemilik" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pemilik</label>
+                                <input type="text" id="pemilik" name="pemilik" placeholder="Kepemilikan"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                                    value="<?= htmlspecialchars($umkm['pemilik']) ?>" required>
+                            </div>
                             <label for="alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alamat</label>
                             <textarea id="alamat" name="alamat" placeholder="Alamat"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"

@@ -87,6 +87,7 @@
         <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Data UMKM</a>
         <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Data Kota</a>
         <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Data Pembina</a>
+        <a href="#" class="block py-2 text-gray-800 dark:text-gray-200 hover:text-primary">Data Provinsi</a>
         <a href="../prosess/logout.php" class="block py-2 text-red-600 hover:text-red-800 font-bold">Logout</a>
     </div>
 
@@ -96,7 +97,7 @@
             <p class="mt-2 text-xl text-gray-600 dark:text-gray-300">Aplikasi Manajemen Data UMKM</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
             <div
                 class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
                 <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Data Pembina</h2>
@@ -117,9 +118,17 @@
 
             <div
                 class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
-                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Data Kabupaten/Kota</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Data Kota</h2>
                 <p class="text-gray-600 dark:text-gray-400">Kelola data wilayah kabupaten dan kota.</p>
                 <a href="../form/kabkota.php"
+                    class="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-lg shadow hover:bg-secondary transition">Lihat
+                    Data</a>
+            </div>
+            <div
+                class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Data Provinsi</h2>
+                <p class="text-gray-600 dark:text-gray-400">Kelola data provinsi.</p>
+                <a href="../form/provinsi.php"
                     class="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-lg shadow hover:bg-secondary transition">Lihat
                     Data</a>
             </div>

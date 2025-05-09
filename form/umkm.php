@@ -15,11 +15,12 @@ class UMKM
     {
         $kabkota_id = isset($data['kabkota_id']) && $data['kabkota_id'] != '' ? $data['kabkota_id'] : null;
 
-        $stmt = $this->koneksi->prepare("INSERT INTO umkm(nama, modal, alamat, website, email, rating, kategori_umkm_id, kabkota_id, pembina_id) VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt = $this->koneksi->prepare("INSERT INTO umkm(nama, modal, pemilik, alamat, website, email, rating, kategori_umkm_id, kabkota_id, pembina_id) VALUES (?,?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param(
-            "ssssssiii",
+            "sssssssiii",
             $data['nama'],
             $data['modal'],
+            $data['pemilik'],
             $data['alamat'],
             $data['website'],
             $data['email'],
@@ -168,6 +169,7 @@ if (isset($_GET['delete'])) {
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">No</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
                             <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Modal</th>
+                            <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Pemilik</th>
                             <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Alamat</th>
                             <th scope="col" class="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Website</th>
                             <th scope="col" class="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
@@ -185,6 +187,7 @@ if (isset($_GET['delete'])) {
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white"><?= $i + 1 ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($row['nama']) ?></td>
                                     <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['modal']) ?></td>
+                                    <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['pemilik']) ?></td>
                                     <td class="hidden md:table-cell px-6 py-4 whitespace-normal text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['alamat']) ?></td>
                                     <td class="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-blue-400 hover:underline"><a href="<?= htmlspecialchars($row['website']) ?>" target="_blank"><?= htmlspecialchars($row['website']) ?></a></td>
                                     <td class="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($row['email']) ?></td>
@@ -241,6 +244,10 @@ if (isset($_GET['delete'])) {
                             <input type="text" id="modal" name="modal" placeholder="Modal" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
                         </div>
                         <div class="md:col-span-2">
+                            <div>
+                                <label for="pemilik" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pemilik</label>
+                                <input type="text" id="pemilik" name="pemilik" placeholder="Kepemilikan" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
+                            </div>
                             <label for="alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alamat</label>
                             <textarea id="alamat" name="alamat" placeholder="Alamat" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" rows="3" required></textarea>
                         </div>

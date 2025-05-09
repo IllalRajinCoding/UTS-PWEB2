@@ -1,231 +1,176 @@
-<<<<<<< HEAD
 <?php
-include '../config/koneksi.php';
-?>  
+include "../config/koneksi.php";
+?>
 
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pembina Pelatihan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Data Pembina UMKM</title>
+    <link rel="stylesheet" href="../src/output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4D55CC',
+                        secondary: '#2DAA9E',
+                        accent: '#f59e0b',
+                        dark: '#1f2937',
+                        light: '#f3f4f6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'card-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .speaker-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(to bottom, white 80%, #f8fafc 20%);
         }
-        .header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-            margin-bottom: 20px;
-        }
-        .card:hover {
+
+        .speaker-card:hover {
             transform: translateY(-5px);
         }
-        .card-header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            border-radius: 10px 10px 0 0 !important;
-        }
-        .gender-icon {
-            font-size: 1.5rem;
-            margin-right: 5px;
-        }
-        .male {
-            color: #2575fc;
-        }
-        .female {
-            color: #ff6b6b;
-        }
-        .table-responsive {
-            border-radius: 10px;
+
+        .expertise-badge {
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .table th {
-            background-color: #6a11cb;
-            color: white;
+
+        .expertise-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
         }
-        .badge-keahlian {
-            background-color: #6a11cb;
-            margin-right: 5px;
-            margin-bottom: 5px;
+
+        .expertise-badge:hover::after {
+            animation: shine 1.5s infinite;
         }
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .age-badge {
-            background-color: #2575fc;
+
+        @keyframes shine {
+            100% {
+                transform: translateX(100%);
+            }
         }
     </style>
 </head>
-<body>
-    <div class="header text-center">
-        <div class="container">
-            <h1><i class="fas fa-chalkboard-teacher me-2"></i>Data Pembina Pelatihan</h1>
-            <p class="lead">Daftar pembina beserta informasi lengkap mereka</p>
-        </div>
-    </div>
 
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>Total Pembina</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <h2 class="display-4">
-                            <?php 
-                                $query_total = "SELECT COUNT(*) FROM pembina";
-                                $result_total = mysqli_query($conn, $query_total);
-                                $row_total = mysqli_fetch_array($result_total);
-                                echo $row_total[0];
-                            ?>
-                        </h2>
-                        <p class="text-muted">Total Pembina Terdaftar</p>
-                    </div>
+<body class="bg-gray-50">
+    <?php include '../component/navbar.php' ?>
+
+    <main>
+        <!-- Hero Section -->
+        <div class="relative bg-primary py-16">
+            <div class="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center"></div>
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Pembina & Mentor UMKM</h1>
+                    <p class="text-xl text-white opacity-90">Temukan pembina berpengalaman yang siap membantu mengembangkan bisnis Anda</p>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0"><i class="fas fa-venus-mars me-2"></i>Jenis Kelamin</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-6">
-                                <i class="fas fa-male gender-icon male"></i>
-                                <h4>
-                                    <?php 
-                                        $query_male = "SELECT COUNT(*) FROM pembina WHERE gender = 'L'";
-                                        $result_male = mysqli_query($conn, $query_male);
-                                        $row_male = mysqli_fetch_array($result_male);
-                                        echo $row_male[0];
-                                    ?>
-                                </h4>
-                                <p class="text-muted">Laki-laki</p>
+        </div>
+
+        <!-- Pembina Section -->
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Tim Pembina Kami</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Para ahli di bidangnya masing-masing yang telah membantu ratusan UMKM berkembang</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="px-4 py-2 rounded-full bg-primary text-white font-medium">Semua</button>
+                <button class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">Marketing</button>
+                <button class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">Keuangan</button>
+                <button class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">Produksi</button>
+                <button class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">Digital</button>
+            </div>
+
+            <!-- Pembina Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <?php
+                $query = "SELECT * FROM pembina";
+                $result = mysqli_query($koneksi, $query);
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+                    <div class="speaker-card rounded-xl shadow-card hover:shadow-card-hover overflow-hidden border border-gray-100">
+                        <!-- Header with image -->
+                        <div class="relative h-48 bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                            <img src="../src/assets/pelatihan.jpg" alt="Pembina UMKM" class="w-full h-full object-cover opacity-90">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-1"><?php echo $row['nama']; ?></h3>
+                            <p class="text-gray-500 text-sm mb-4">Pembina UMKM Profesional</p>
+
+                            <div class="mb-4">
+                                <span class="expertise-badge inline-block bg-secondary bg-opacity-10 text-secondary text-sm px-4 py-2 rounded-full font-medium">
+                                    <i class="fas fa-star mr-2"></i><?php echo $row['keahlian']; ?>
+                                </span>
                             </div>
-                            <div class="col-6">
-                                <i class="fas fa-female gender-icon female"></i>
-                                <h4>
-                                    <?php 
-                                        $query_female = "SELECT COUNT(*) FROM pembina WHERE gender = 'P'";
-                                        $result_female = mysqli_query($conn, $query_female);
-                                        $row_female = mysqli_fetch_array($result_female);
-                                        echo $row_female[0];
-                                    ?>
-                                </h4>
-                                <p class="text-muted">Perempuan</p>
+
+                            <div class="flex justify-between text-sm text-gray-500 mb-4">
+                                <span><i class="fas fa-user-graduate mr-1"></i> 15+ Tahun</span>
+                                <span><i class="fas fa-users mr-1"></i> 200+ UMKM</span>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                            <a href="#" class="text-primary font-medium text-sm hover:underline flex items-center">
+                                <i class="far fa-eye mr-2"></i> Lihat Profil
+                            </a>
+                            <div class="flex space-x-2">
+                                <a href="#" class="text-gray-400 hover:text-primary">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                                <a href="#" class="text-gray-400 hover:text-primary">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="#" class="text-gray-400 hover:text-primary">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
 
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="card-title mb-0"><i class="fas fa-list me-2"></i>Daftar Pembina</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Foto</th>
-                                <th>Nama Pembina</th>
-                                <th>Jenis Kelamin</th>
-                                <th>TTL</th>
-                                <th>Usia</th>
-                                <th>Keahlian</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $no = 1;
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                // Hitung usia
-                                $tgl_lahir = new DateTime($row['tgl_Jahir']);
-                                $today = new DateTime();
-                                $usia = $today->diff($tgl_lahir)->y;
-                                
-                                // Format tanggal lahir
-                                $tgl_lahir_formatted = date('d M Y', strtotime($row['tgl_Jahir']));
-                                
-                                // Pisahkan keahlian
-                                $keahlian_arr = explode(',', $row['keahlian']);
-                            ?>
-                            <tr>
-                                <td><?php echo $no++; ?></td>
-                                <td>
-                                    <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($row['nama']); ?>&background=6a11cb&color=fff" alt="Foto Profil" class="profile-img">
-                                </td>
-                                <td><?php echo htmlspecialchars($row['nama']); ?></td>
-                                <td>
-                                    <?php 
-                                        if ($row['gender'] == 'L') {
-                                            echo '<i class="fas fa-male gender-icon male"></i> Laki-laki';
-                                        } else {
-                                            echo '<i class="fas fa-female gender-icon female"></i> Perempuan';
-                                        }
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php echo htmlspecialchars($row['tmp_Jahir']) . ', ' . $tgl_lahir_formatted; ?>
-                                </td>
-                                <td>
-                                    <span class="badge rounded-pill age-badge"><?php echo $usia; ?> tahun</span>
-                                </td>
-                                <td>
-                                    <?php 
-                                        foreach ($keahlian_arr as $keahlian) {
-                                            echo '<span class="badge badge-keahlian rounded-pill">' . trim(htmlspecialchars($keahlian)) . '</span>';
-                                        }
-                                    ?>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- CTA Section -->
+        <div class="bg-primary py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl font-bold text-white mb-6">Siap Mengembangkan Bisnis Anda?</h2>
+                <p class="text-white opacity-90 max-w-2xl mx-auto mb-8">Dapatkan bimbingan langsung dari para ahli untuk mengoptimalkan potensi bisnis UMKM Anda</p>
+                <button class="bg-white text-primary font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors shadow-lg">
+                    Daftar Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                </button>
             </div>
         </div>
-    </div>
+    </main>
 
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container text-center">
-            <p>&copy; <?php echo date('Y'); ?> Sistem Pelatihan. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <?php include '../component/footer.php' ?>
 </body>
-</html>
 
-<?php
-// Tutup koneksi database
-mysqli_close($conn);
-?>
-=======
-=
->>>>>>> a67be81f3229afe9ed9265ec6424811c7079d96c
+</html>
