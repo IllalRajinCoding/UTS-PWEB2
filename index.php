@@ -43,29 +43,7 @@ class KabupatenKota
 
 $kabupatenKota = new KabupatenKota($koneksi);
 $provinsi_data = $kabupatenKota->getProvinsiList();
-session_start();
 
-if (isset($_SESSION['message'])) {
-    echo "<script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-        
-        Toast.fire({
-            icon: 'success',
-            title: '".$_SESSION['message']."'
-        })
-    </script>";
-    unset($_SESSION['message']);
-}
 ?>
 
 
@@ -329,6 +307,7 @@ if (isset($_SESSION['message'])) {
     </div>
   </section>
 
+
   <!-- Featured Products -->
   <section id="produk" class="py-16 bg-white">
     <div class="container mx-auto px-4">
@@ -446,168 +425,168 @@ if (isset($_SESSION['message'])) {
             </ul>
           </div>
         </div>
-<!-- Registration Form Column -->
-<div class="animate-fade-in delay-200 order-1 lg:order-2">
-  <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
-    <!-- Form Header -->
-    <div class="bg-gradient-to-r from-primary to-secondary p-6">
-      <h3 class="text-2xl font-bold text-white text-center">Form Pendaftaran UMKM</h3>
-    </div>
+        <!-- Registration Form Column -->
+        <div class="animate-fade-in delay-200 order-1 lg:order-2">
+          <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+            <!-- Form Header -->
+            <div class="bg-gradient-to-r from-primary to-secondary p-6">
+              <h3 class="text-2xl font-bold text-white text-center">Form Pendaftaran UMKM</h3>
+            </div>
 
-    <!-- Form Content -->
-    <div class="p-6 sm:p-8">
-      <form method="POST" action="./prosess/process_umkm.php" class="space-y-5">
-        <!-- Business Name -->
-        <div>
-          <label for="nama" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Nama UMKM <span class="text-red-500">*</span></label>
-          <input type="text" id="nama" name="nama" required
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-        </div>
+            <!-- Form Content -->
+            <div class="p-6 sm:p-8">
+              <form method="POST" action="./prosess/process_umkm.php" class="space-y-5">
+                <!-- Business Name -->
+                <div>
+                  <label for="nama" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Nama UMKM <span class="text-red-500">*</span></label>
+                  <input type="text" id="nama" name="nama" required
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                </div>
 
-        <!-- Owner Name -->
-        <div>
-          <label for="pemilik" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Nama Pemilik <span class="text-red-500">*</span></label>
-          <input type="text" id="pemilik" name="pemilik" required
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-        </div>
+                <!-- Owner Name -->
+                <div>
+                  <label for="pemilik" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Nama Pemilik <span class="text-red-500">*</span></label>
+                  <input type="text" id="pemilik" name="pemilik" required
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                </div>
 
-        <!-- Business Capital -->
-        <div>
-          <label for="modal" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Modal (Rp) <span class="text-red-500">*</span></label>
-          <input type="number" id="modal" name="modal" step="0.01" required
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-        </div>
+                <!-- Business Capital -->
+                <div>
+                  <label for="modal" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Modal (Rp) <span class="text-red-500">*</span></label>
+                  <input type="number" id="modal" name="modal" step="0.01" required
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                </div>
 
-        <!-- Location -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label for="provinsi" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Provinsi</label>
-            <select id="provinsi" 
-              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-              <option value="">Pilih Provinsi</option>
-              <?php
-              // Query to get provinces from database
-              $query = "SELECT * FROM provinsi ORDER BY nama ASC";
-              $result = mysqli_query($koneksi, $query);
-              while ($row = mysqli_fetch_assoc($result)) {
-                echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
-              }
-              ?>
-            </select>
+                <!-- Location -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="provinsi" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Provinsi</label>
+                    <select id="provinsi"
+                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                      <option value="">Pilih Provinsi</option>
+                      <?php
+                      // Query to get provinces from database
+                      $query = "SELECT * FROM provinsi ORDER BY nama ASC";
+                      $result = mysqli_query($koneksi, $query);
+                      while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<option value="' . $row['id'] . '">' . $row['nama'] . '</option>';
+                      }
+                      ?>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="kabkota_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kabupaten/Kota <span class="text-red-500">*</span></label>
+                    <select id="kabkota_id" name="kabkota_id" required
+                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                      <option value="">Pilih Kabupaten/Kota</option>
+                      <?php
+                      // Query to get provinces from database
+                      $query = "SELECT * FROM kabkota ORDER BY nama ASC";
+                      $result = mysqli_query($koneksi, $query);
+                      while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<option value="' . $row['id'] . '">' . $row['nama'] . '</option>';
+                      }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Business Category -->
+                <div>
+                  <label for="kategori_umkm_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kategori Usaha <span class="text-red-500">*</span></label>
+                  <select id="kategori_umkm_id" name="kategori_umkm_id" required
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                    <option value="">Pilih Kategori</option>
+                    <?php
+                    // Query to get categories from database
+                    $query = "SELECT * FROM kategori_umkm ORDER BY nama ASC";
+                    $result = mysqli_query($koneksi, $query);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                      echo '<option value="' . $row['id'] . '">' . $row['nama'] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <!-- Address -->
+                <div>
+                  <label for="alamat" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
+                  <textarea id="alamat" name="alamat" rows="3" required
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white"></textarea>
+                </div>
+
+                <!-- Website -->
+                <div>
+                  <label for="website" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Website</label>
+                  <input type="url" id="website" name="website"
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <!-- Email -->
+                <div>
+                  <label for="email" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Email</label>
+                  <input type="email" id="email" name="email"
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <!-- Rating -->
+                <div>
+                  <label for="rating" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Rating (1-5)</label>
+                  <input type="number" id="rating" name="rating" min="1" max="5" step="0.1"
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <!-- Pembina -->
+                <div>
+                  <label for="pembina_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Pembina</label>
+                  <select id="pembina_id" name="pembina_id"
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+                    <option value="">Pilih Pembina</option>
+                    <?php
+                    // Query to get pembina from database
+                    $query = "SELECT * FROM pembina ORDER BY nama ASC";
+                    $result = mysqli_query($koneksi, $query);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                      echo '<option value="' . $row['id'] . '">' . $row['nama'] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" name="submit"
+                  class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:-translate-y-0.5 shadow-md hover:shadow-lg">
+                  Daftar Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+                  Dengan mendaftar, Anda menyetujui <a href="#" class="text-primary hover:underline">Syarat & Ketentuan</a> kami.
+                </p>
+              </form>
+            </div>
           </div>
-          <div>
-            <label for="kabkota_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kabupaten/Kota <span class="text-red-500">*</span></label>
-            <select id="kabkota_id" name="kabkota_id" required
-              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-              <option value="">Pilih Kabupaten/Kota</option>
-               <?php
-              // Query to get provinces from database
-              $query = "SELECT * FROM kabkota ORDER BY nama ASC";
-              $result = mysqli_query($koneksi, $query);
-              while ($row = mysqli_fetch_assoc($result)) {
-                echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
-              }
-              ?>
-            </select>
-          </div>
         </div>
 
-        <!-- Business Category -->
-        <div>
-          <label for="kategori_umkm_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kategori Usaha <span class="text-red-500">*</span></label>
-          <select id="kategori_umkm_id" name="kategori_umkm_id" required
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-            <option value="">Pilih Kategori</option>
-            <?php
-            // Query to get categories from database
-            $query = "SELECT * FROM kategori_umkm ORDER BY nama ASC";
-            $result = mysqli_query($koneksi, $query);
-            while ($row = mysqli_fetch_assoc($result)) {
-              echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
+        <script>
+          // Dynamic kabkota dropdown based on selected provinsi
+          document.getElementById('provinsi').addEventListener('change', function() {
+            const provinsiId = this.value;
+            const kabkotaSelect = document.getElementById('kabkota_id');
+
+            if (provinsiId) {
+              fetch('get_kabkota.php?provinsi_id=' + provinsiId)
+                .then(response => response.json())
+                .then(data => {
+                  kabkotaSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+                  data.forEach(kabkota => {
+                    kabkotaSelect.innerHTML += `<option value="${kabkota.id}">${kabkota.nama}</option>`;
+                  });
+                });
+            } else {
+              kabkotaSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
             }
-            ?>
-          </select>
-        </div>
-
-        <!-- Address -->
-        <div>
-          <label for="alamat" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
-          <textarea id="alamat" name="alamat" rows="3" required
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white"></textarea>
-        </div>
-
-        <!-- Website -->
-        <div>
-          <label for="website" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Website</label>
-          <input type="url" id="website" name="website"
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-        </div>
-
-        <!-- Email -->
-        <div>
-          <label for="email" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Email</label>
-          <input type="email" id="email" name="email"
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-        </div>
-
-        <!-- Rating -->
-        <div>
-          <label for="rating" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Rating (1-5)</label>
-          <input type="number" id="rating" name="rating" min="1" max="5" step="0.1"
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-        </div>
-
-        <!-- Pembina -->
-        <div>
-          <label for="pembina_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Pembina</label>
-          <select id="pembina_id" name="pembina_id"
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
-            <option value="">Pilih Pembina</option>
-            <?php
-            // Query to get pembina from database
-            $query = "SELECT * FROM pembina ORDER BY nama ASC";
-            $result = mysqli_query($koneksi, $query);
-            while ($row = mysqli_fetch_assoc($result)) {
-              echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
-            }
-            ?>
-          </select>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" name="submit"
-          class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:-translate-y-0.5 shadow-md hover:shadow-lg">
-          Daftar Sekarang <i class="fas fa-arrow-right ml-2"></i>
-        </button>
-
-        <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
-          Dengan mendaftar, Anda menyetujui <a href="#" class="text-primary hover:underline">Syarat & Ketentuan</a> kami.
-        </p>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script>
-// Dynamic kabkota dropdown based on selected provinsi
-document.getElementById('provinsi').addEventListener('change', function() {
-  const provinsiId = this.value;
-  const kabkotaSelect = document.getElementById('kabkota_id');
-  
-  if (provinsiId) {
-    fetch('get_kabkota.php?provinsi_id=' + provinsiId)
-      .then(response => response.json())
-      .then(data => {
-        kabkotaSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-        data.forEach(kabkota => {
-          kabkotaSelect.innerHTML += `<option value="${kabkota.id}">${kabkota.nama}</option>`;
-        });
-      });
-  } else {
-    kabkotaSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-  }
-});
-</script>
+          });
+        </script>
       </div>
     </div>
   </section>

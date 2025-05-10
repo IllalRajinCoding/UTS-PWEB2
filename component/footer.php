@@ -39,7 +39,7 @@
             <div>
                 <h4 class="text-lg font-bold mb-4">Layanan</h4>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-gray-400 hover:text-white transition">Pelatihan UMKM</a></li>
+                    <li><a href="../pages/pelatihan.php" class="text-gray-400 hover:text-white transition">Pelatihan UMKM</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-white transition">Pendampingan Bisnis</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-white transition">Akses Pembiayaan</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-white transition">Pemasaran Digital</a></li>
@@ -69,7 +69,7 @@
         <div class="border-t border-gray-800 pt-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-500 text-sm mb-4 md:mb-0">
-                    &copy; 2023 Direktori UMKM Indonesia. Hak Cipta Dilindungi.
+                    &copy; 2025 Direktori UMKM Indonesia. Hak Cipta Dilindungi.
                 </p>
                 <div class="flex space-x-6">
                     <a href="#" class="text-gray-500 hover:text-white text-sm transition">Kebijakan Privasi</a>

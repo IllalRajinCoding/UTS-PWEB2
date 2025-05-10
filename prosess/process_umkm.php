@@ -36,8 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     );
     
     if ($stmt->execute()) {
-        $_SESSION['message'] = 'Data UMKM berhasil ditambahkan!';
-        header('Location: ../index.php');
+        $_SESSION['registration_success'] = true; // Ubah ini
+        $_SESSION['message'] = 'Pendaftaran UMKM berhasil dikirim!'; // Pesan tambahan
+        header('Location: ../pages/output_umkm.php');
         exit;
     } else {
         $_SESSION['error'] = 'Gagal menambahkan data UMKM: ' . $stmt->error;
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         exit;
     }
 } else {
-    header('Location: ../index.php');
     $_SESSION['error'] = 'Permintaan tidak valid!';
+    header('Location: ../pages/output_umkm.php'); // Sebaiknya redirect ke form pendaftaran
     exit;
 }
