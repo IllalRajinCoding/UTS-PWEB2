@@ -108,7 +108,6 @@ if (isset($_GET['delete'])) {
     header('Location: umkm.php');
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -140,6 +139,11 @@ if (isset($_GET['delete'])) {
     <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
+                <button id="toggle" class="absolute top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-sky-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-sky-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path id="toggle-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
                 <div class="flex items-center">
                     <span class="text-xl font-bold text-gray-900 dark:text-white">Data UMKM</span>
                 </div>
@@ -148,6 +152,7 @@ if (isset($_GET['delete'])) {
     </nav>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Data Table Card -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 transition-colors duration-300">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="flex items-center">
@@ -225,7 +230,8 @@ if (isset($_GET['delete'])) {
             </div>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-colors duration-300 mt-8">
+        <!-- Add Form Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-colors duration-300">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex items-center">
                     <i class="fas fa-plus-circle text-primary dark:text-primary-300 mr-2"></i>
@@ -237,35 +243,35 @@ if (isset($_GET['delete'])) {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama UMKM</label>
-                            <input type="text" id="nama" name="nama" placeholder="Nama UMKM" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
+                            <input type="text" id="nama" name="nama" placeholder="Nama UMKM" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" required>
                         </div>
                         <div>
                             <label for="modal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Modal</label>
-                            <input type="text" id="modal" name="modal" placeholder="Modal" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
+                            <input type="text" id="modal" name="modal" placeholder="Modal" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" required>
+                        </div>
+                        <div>
+                            <label for="pemilik" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pemilik</label>
+                            <input type="text" id="pemilik" name="pemilik" placeholder="Kepemilikan" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" required>
                         </div>
                         <div class="md:col-span-2">
-                            <div>
-                                <label for="pemilik" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pemilik</label>
-                                <input type="text" id="pemilik" name="pemilik" placeholder="Kepemilikan" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
-                            </div>
                             <label for="alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alamat</label>
-                            <textarea id="alamat" name="alamat" placeholder="Alamat" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" rows="3" required></textarea>
+                            <textarea id="alamat" name="alamat" placeholder="Alamat" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" rows="3" required></textarea>
                         </div>
                         <div>
                             <label for="website" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website</label>
-                            <input type="url" id="website" name="website" placeholder="Website" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                            <input type="url" id="website" name="website" placeholder="Website" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200">
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                            <input type="email" id="email" name="email" placeholder="Email" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200">
                         </div>
                         <div>
                             <label for="rating" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rating</label>
-                            <input type="number" id="rating" name="rating" placeholder="Rating" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" min="1" max="5" step="0.1">
+                            <input type="number" id="rating" name="rating" placeholder="Rating" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" min="1" max="5" step="0.1">
                         </div>
                         <div>
                             <label for="kategori_umkm_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori</label>
-                            <select id="kategori_umkm_id" name="kategori_umkm_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
+                            <select id="kategori_umkm_id" name="kategori_umkm_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" required>
                                 <option value="">Pilih Kategori</option>
                                 <?php foreach ($kategori_umkm as $k): ?>
                                     <option value="<?= $k['id'] ?>"><?= htmlspecialchars($k['nama']) ?></option>
@@ -274,7 +280,7 @@ if (isset($_GET['delete'])) {
                         </div>
                         <div>
                             <label for="kabkota_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kab/Kota</label>
-                            <select id="kabkota_id" name="kabkota_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
+                            <select id="kabkota_id" name="kabkota_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" required>
                                 <option value="">Pilih Kab/Kota</option>
                                 <?php foreach ($kabkota_data as $k): ?>
                                     <option value="<?= $k['id'] ?>"><?= htmlspecialchars($k['nama']) ?></option>
@@ -283,7 +289,7 @@ if (isset($_GET['delete'])) {
                         </div>
                         <div>
                             <label for="pembina_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pembina</label>
-                            <select id="pembina_id" name="pembina_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white" required>
+                            <select id="pembina_id" name="pembina_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm transition-colors duration-200" required>
                                 <option value="">Pilih Pembina</option>
                                 <?php foreach ($pembina_data as $p): ?>
                                     <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['nama']) ?></option>
@@ -291,11 +297,11 @@ if (isset($_GET['delete'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="pt-4 flex space-x-4">
-                        <button name="submit" type="submit" class="px-4 py-2 bg-primary hover:bg-secondary text-white rounded-md shadow-sm flex items-center">
+                    <div class="flex items-center space-x-4 pt-4">
+                        <button name="submit" type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-gray-800 transition-colors duration-200">
                             <i class="fas fa-save mr-2"></i>Simpan
                         </button>
-                        <a href="../pages/dashboard.php" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md shadow-sm flex items-center">
+                        <a href="../pages/dashboard.php" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-gray-800 transition-colors duration-200">
                             <i class="fas fa-arrow-left mr-2"></i>Kembali
                         </a>
                     </div>
@@ -305,6 +311,7 @@ if (isset($_GET['delete'])) {
     </main>
 
     <script src="../src/index.js"></script>
+    <script src="../src/toggle.js"></script>
     <script>
         function confirmDelete(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
@@ -354,5 +361,4 @@ if (isset($_GET['delete'])) {
         unset($_SESSION['message']);
     } ?>
 </body>
-
 </html>

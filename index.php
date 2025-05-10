@@ -43,6 +43,29 @@ class KabupatenKota
 
 $kabupatenKota = new KabupatenKota($koneksi);
 $provinsi_data = $kabupatenKota->getProvinsiList();
+session_start();
+
+if (isset($_SESSION['message'])) {
+    echo "<script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        
+        Toast.fire({
+            icon: 'success',
+            title: '".$_SESSION['message']."'
+        })
+    </script>";
+    unset($_SESSION['message']);
+}
 ?>
 
 
@@ -169,7 +192,7 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
         <!-- Desktop menu -->
         <div class="hidden md:block">
           <div class="ml-10 flex items-center space-x-4">
-            <a href="#" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
+            <a href="" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
             <a href="#produk" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Produk</a>
             <a href="#lokasi" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Lokasi</a>
             <a href="./pages/pelatihan.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Pelatihan</a>
@@ -199,7 +222,7 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
     <!-- Mobile menu (hidden by default) -->
     <div id="mobile-menu" class="md:hidden hidden origin-top transition-all duration-300 ease-out">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Beranda</a>
+        <a href="" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Beranda</a>
         <a href="#produk" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Produk</a>
         <a href="#lokasi" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Lokasi</a>
         <a href="./pages/pelatihan.php" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:text-primary hover:bg-gray-50 transition-colors">Pelatihan</a>
@@ -423,102 +446,168 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
             </ul>
           </div>
         </div>
+<!-- Registration Form Column -->
+<div class="animate-fade-in delay-200 order-1 lg:order-2">
+  <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+    <!-- Form Header -->
+    <div class="bg-gradient-to-r from-primary to-secondary p-6">
+      <h3 class="text-2xl font-bold text-white text-center">Form Pendaftaran UMKM</h3>
+    </div>
 
-        <!-- Registration Form Column -->
-        <div class="animate-fade-in delay-200 order-1 lg:order-2">
-          <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
-            <!-- Form Header -->
-            <div class="bg-gradient-to-r from-primary to-secondary p-6">
-              <h3 class="text-2xl font-bold text-white text-center">Form Pendaftaran UMKM</h3>
-            </div>
+    <!-- Form Content -->
+    <div class="p-6 sm:p-8">
+      <form method="POST" action="./prosess/process_umkm.php" class="space-y-5">
+        <!-- Business Name -->
+        <div>
+          <label for="nama" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Nama UMKM <span class="text-red-500">*</span></label>
+          <input type="text" id="nama" name="nama" required
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+        </div>
 
-            <!-- Form Content -->
-            <div class="p-6 sm:p-8">
-              <form class="space-y-5">
-                <!-- Business Name -->
-                <div>
-                  <label for="nama" class="block text-gray-700 font-medium mb-2">Nama UMKM <span class="text-red-500">*</span></label>
-                  <input type="text" id="nama" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                </div>
+        <!-- Owner Name -->
+        <div>
+          <label for="pemilik" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Nama Pemilik <span class="text-red-500">*</span></label>
+          <input type="text" id="pemilik" name="pemilik" required
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+        </div>
 
-                <!-- Owner Name -->
-                <div>
-                  <label for="pemilik" class="block text-gray-700 font-medium mb-2">Nama Pemilik <span class="text-red-500">*</span></label>
-                  <input type="text" id="pemilik" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                </div>
+        <!-- Business Capital -->
+        <div>
+          <label for="modal" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Modal (Rp) <span class="text-red-500">*</span></label>
+          <input type="number" id="modal" name="modal" step="0.01" required
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+        </div>
 
-                <!-- Location -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label for="provinsi" class="block text-gray-700 font-medium mb-2">Provinsi <span class="text-red-500">*</span></label>
-                    <select id="provinsi" required
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                      <option value="">Pilih Provinsi</option>
-                      <option value="1">Jawa Barat</option>
-                      <option value="2">Jawa Tengah</option>
-                      <option value="3">Jawa Timur</option>
-                      <option value="4">DKI Jakarta</option>
-                      <option value="5">Banten</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="kabkota" class="block text-gray-700 font-medium mb-2">Kabupaten/Kota <span class="text-red-500">*</span></label>
-                    <select id="kabkota" required
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                      <option value="">Pilih Kabupaten/Kota</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Business Category -->
-                <div>
-                  <label for="kategori" class="block text-gray-700 font-medium mb-2">Kategori Usaha <span class="text-red-500">*</span></label>
-                  <select id="kategori" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                    <option value="">Pilih Kategori</option>
-                    <option value="makanan">Makanan & Minuman</option>
-                    <option value="kerajinan">Kerajinan Tangan</option>
-                    <option value="fashion">Fashion & Aksesoris</option>
-                    <option value="jasa">Jasa</option>
-                    <option value="lainnya">Lainnya</option>
-                  </select>
-                </div>
-
-                <!-- Address -->
-                <div>
-                  <label for="alamat" class="block text-gray-700 font-medium mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
-                  <textarea id="alamat" rows="3" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"></textarea>
-                </div>
-
-                <!-- Contact -->
-                <div>
-                  <label for="kontak" class="block text-gray-700 font-medium mb-2">Nomor WhatsApp <span class="text-red-500">*</span></label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span class="text-gray-500">+62</span>
-                    </div>
-                    <input type="tel" id="kontak" required
-                      class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                      placeholder="812-3456-7890">
-                  </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit"
-                  class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:-translate-y-0.5 shadow-md hover:shadow-lg">
-                  Daftar Sekarang <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-
-                <p class="text-sm text-gray-500 text-center">
-                  Dengan mendaftar, Anda menyetujui <a href="#" class="text-primary hover:underline">Syarat & Ketentuan</a> kami.
-                </p>
-              </form>
-            </div>
+        <!-- Location -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="provinsi" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Provinsi</label>
+            <select id="provinsi" 
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+              <option value="">Pilih Provinsi</option>
+              <?php
+              // Query to get provinces from database
+              $query = "SELECT * FROM provinsi ORDER BY nama ASC";
+              $result = mysqli_query($koneksi, $query);
+              while ($row = mysqli_fetch_assoc($result)) {
+                echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
+              }
+              ?>
+            </select>
+          </div>
+          <div>
+            <label for="kabkota_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kabupaten/Kota <span class="text-red-500">*</span></label>
+            <select id="kabkota_id" name="kabkota_id" required
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+              <option value="">Pilih Kabupaten/Kota</option>
+               <?php
+              // Query to get provinces from database
+              $query = "SELECT * FROM kabkota ORDER BY nama ASC";
+              $result = mysqli_query($koneksi, $query);
+              while ($row = mysqli_fetch_assoc($result)) {
+                echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
+              }
+              ?>
+            </select>
           </div>
         </div>
+
+        <!-- Business Category -->
+        <div>
+          <label for="kategori_umkm_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kategori Usaha <span class="text-red-500">*</span></label>
+          <select id="kategori_umkm_id" name="kategori_umkm_id" required
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+            <option value="">Pilih Kategori</option>
+            <?php
+            // Query to get categories from database
+            $query = "SELECT * FROM kategori_umkm ORDER BY nama ASC";
+            $result = mysqli_query($koneksi, $query);
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
+            }
+            ?>
+          </select>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label for="alamat" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
+          <textarea id="alamat" name="alamat" rows="3" required
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white"></textarea>
+        </div>
+
+        <!-- Website -->
+        <div>
+          <label for="website" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Website</label>
+          <input type="url" id="website" name="website"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Email</label>
+          <input type="email" id="email" name="email"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+        </div>
+
+        <!-- Rating -->
+        <div>
+          <label for="rating" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Rating (1-5)</label>
+          <input type="number" id="rating" name="rating" min="1" max="5" step="0.1"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+        </div>
+
+        <!-- Pembina -->
+        <div>
+          <label for="pembina_id" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Pembina</label>
+          <select id="pembina_id" name="pembina_id"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition dark:bg-gray-700 dark:text-white">
+            <option value="">Pilih Pembina</option>
+            <?php
+            // Query to get pembina from database
+            $query = "SELECT * FROM pembina ORDER BY nama ASC";
+            $result = mysqli_query($koneksi, $query);
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo '<option value="'.$row['id'].'">'.$row['nama'].'</option>';
+            }
+            ?>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" name="submit"
+          class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:-translate-y-0.5 shadow-md hover:shadow-lg">
+          Daftar Sekarang <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+
+        <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+          Dengan mendaftar, Anda menyetujui <a href="#" class="text-primary hover:underline">Syarat & Ketentuan</a> kami.
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Dynamic kabkota dropdown based on selected provinsi
+document.getElementById('provinsi').addEventListener('change', function() {
+  const provinsiId = this.value;
+  const kabkotaSelect = document.getElementById('kabkota_id');
+  
+  if (provinsiId) {
+    fetch('get_kabkota.php?provinsi_id=' + provinsiId)
+      .then(response => response.json())
+      .then(data => {
+        kabkotaSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+        data.forEach(kabkota => {
+          kabkotaSelect.innerHTML += `<option value="${kabkota.id}">${kabkota.nama}</option>`;
+        });
+      });
+  } else {
+    kabkotaSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+  }
+});
+</script>
       </div>
     </div>
   </section>
@@ -850,7 +939,7 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
         <div>
           <h4 class="text-lg font-bold mb-4">Tautan Cepat</h4>
           <ul class="space-y-2">
-            <li><a href="#" class="text-gray-400 hover:text-white transition">Beranda</a></li>
+            <li><a href="" class="text-gray-400 hover:text-white transition">Beranda</a></li>
             <li><a href="#produk" class="text-gray-400 hover:text-white transition">Produk</a></li>
             <li><a href="#lokasi" class="text-gray-400 hover:text-white transition">Lokasi</a></li>
             <li><a href="#umkm" class="text-gray-400 hover:text-white transition">Daftar UMKM</a></li>
@@ -861,7 +950,7 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
         <div>
           <h4 class="text-lg font-bold mb-4">Layanan</h4>
           <ul class="space-y-2">
-            <li><a href="#" class="text-gray-400 hover:text-white transition">Pelatihan UMKM</a></li>
+            <li><a href="./pages/pelatihan.php" class="text-gray-400 hover:text-white transition">Pelatihan UMKM</a></li>
             <li><a href="#" class="text-gray-400 hover:text-white transition">Pendampingan Bisnis</a></li>
             <li><a href="#" class="text-gray-400 hover:text-white transition">Akses Pembiayaan</a></li>
             <li><a href="#" class="text-gray-400 hover:text-white transition">Pemasaran Digital</a></li>
@@ -891,7 +980,7 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
       <div class="border-t border-gray-800 pt-8">
         <div class="flex flex-col md:flex-row justify-between items-center">
           <p class="text-gray-500 text-sm mb-4 md:mb-0">
-            &copy; 2023 Direktori UMKM Indonesia. Hak Cipta Dilindungi.
+            &copy; 2025 Direktori UMKM Indonesia. Hak Cipta Dilindungi.
           </p>
           <div class="flex space-x-6">
             <a href="#" class="text-gray-500 hover:text-white text-sm transition">Kebijakan Privasi</a>
@@ -905,7 +994,7 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
 
   <!-- Back to Top Button -->
   <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
-    <i class="fas fa-arrow-up">tes</i>
+    <i class="fas fa-arrow-up"></i>
   </button>
 
   <script type="module" src="./src/main.js"></script>

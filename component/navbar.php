@@ -14,7 +14,7 @@
                      <a href="#produk" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Produk</a>
                      <a href="#lokasi" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Lokasi</a>
                      <a href="./pages/pelatihan.php" class="text-dark hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Pelatihan</a>
-                     <a href="./pages/login.php" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-all text-sm font-medium shadow hover:shadow-md">
+                     <a href="../pages/login.php" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-all text-sm font-medium shadow hover:shadow-md">
                          <i class="fas fa-user mr-1"></i>Login
                      </a>
                  </div>
