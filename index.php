@@ -46,9 +46,6 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
 
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -57,6 +54,7 @@ $provinsi_data = $kabupatenKota->getProvinsiList();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Platform UMKM Indonesia untuk memajukan usaha kecil dan menengah">
   <title>Direktori UMKM Indonesia</title>
+  <link rel="icon" href="../src/assets/logo.png" type="image/x-icon" />
 
   <!-- Preconnect for external resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
