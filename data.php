@@ -3,21 +3,21 @@
 $users = [
     [
         'id' => 1,
-        'name' => 'John Doe',
-        'email' => 'john.doe@example.com',
+        'name' => 'Hilal',
+        'email' => 'hilal.doe@google.com',
         'role' => 'admin'
     ],
     [
         'id' => 2,
-        'name' => 'Jane Smith',
-        'email' => 'jane.smith@example.com',
+        'name' => 'Ferdiansyah',
+        'email' => 'Diferh@Dihlearn.com',
         'role' => 'editor'
     ],
     [
         'id' => 3,
         'name' => 'Alice Johnson',
         'email' => 'alice.johnson@example.com',
-        'role' => 'subscriber'
+        'role' => 'Investor'
     ]
 ];
 
